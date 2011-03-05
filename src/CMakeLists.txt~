@@ -1,4 +1,0 @@
-set(libeasyrandr_SRCS main.cpp)
-
-add_library(libeasyrandr ${libeasyrandr_SRCS})
-

@@ -16,16 +16,12 @@ endif(NOT SUFFIX_VERSION)
 find_package(X11 REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(XRANDR_1_3 xrandr>=1.3)
-if (XRANDR_1_3_FOUND)
-   set(HAS_XRANDR_1_3 1)
-else (XRANDR_1_3_FOUND)
-   set(HAS_XRANDR_1_3 0)
-endif (XRANDR_1_3_FOUND)
 if (NOT XRANDR_1_3_FOUND)
    pkg_check_modules (XRANDR_1_2 REQUIRED xrandr>=1.2)
 endif (NOT XRANDR_1_3_FOUND)
 find_package(Qt4 REQUIRED)
 
-include_directories( ${X11_INCLUDE_DIR} ${X11_Xrandr_INCLUDE_PATH} ${QT_INCLUDE_DIR} )
+include_directories( ${X11_INCLUDE_DIR} ${X11_Xrandr_INCLUDE_PATH} ${QT_INCLUDE_DIR}
+		     ${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} )
 
 add_subdirectory(src)

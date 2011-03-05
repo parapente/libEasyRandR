@@ -1,7 +1,5 @@
 configure_file (easycfg.h.cmake
-                ${CMAKE_CURRENT_BINARY_DIR}/easycfg.h )
+                ${CMAKE_CURRENT_SOURCE_DIR}/easycfg.h )
 
-set(libeasyrandr_SRCS main.cpp)
-
-add_library(libeasyrandr ${libeasyrandr_SRCS})
+add_library(libeasyrandr configuration.cpp screen.cpp)
 
