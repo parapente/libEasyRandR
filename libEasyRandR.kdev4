@@ -1,0 +1,4 @@
+[Project]
+Name=libEasyRandR
+Manager=KDevCMakeManager
+VersionControl=kdevgit
