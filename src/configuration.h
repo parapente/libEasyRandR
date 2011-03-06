@@ -24,20 +24,29 @@
 #include <X11/extensions/randrproto.h>
 #include <X11/extensions/Xrandr.h>
 #include <X11/Xproto.h>
+#include "screen.h"
+#include "output.h"
+#include <QMap>
 
 class Configuration : public QObject
 {
+    Q_OBJECT
 
 public:
     explicit Configuration(QObject* parent = 0);
     
+    QList<RROutput> getOutputs();
+    
 private:
+    bool valid;
     int ver_major, ver_minor;
     int eventBase, errorBase;
-    Time configtimestamp;
-    short rate;
+
     Display *display;
-    bool valid;
+    Window window;
+
+    EasyRandR::Screen *screen;
+    QMap<int,Output*> outputs;
 };
 
 #endif // CONFIGURATION_H

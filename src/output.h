@@ -17,32 +17,31 @@
 */
 
 
-#include "configuration.h"
-#include <QX11Info>
+#ifndef OUTPUT_H
+#define OUTPUT_H
 
-Configuration::Configuration(QObject* parent): QObject(parent)
+#include <QObject>
+#include <X11/extensions/Xrandr.h>
+
+class Output : public QObject
 {
-    display = QX11Info::display();
-    window = QX11Info::appRootWindow();
+    Q_OBJECT
     
-    // Check if we can use the RandR Extension
-    valid = XRRQueryExtension(display, &eventBase, &errorBase);
+public:
+    explicit Output(Display *dpy, Window w, int oid, XRRScreenResources *scrres);
+    virtual ~Output();
     
-    if (valid) {
-	// Get version supported by the XServer
-	XRRQueryVersion(display, &ver_major, &ver_minor);
-	screen = new EasyRandR::Screen(display, window);
-	
-	QList<RROutput> outs;
-	outs = screen->getOutputs();
-	for (int i=0; i<outs.count(); i++) {
-	    outputs.insert(outs[i], new Output(display, window, outs[i], screen->getResources()));
-	}
-    }
-}
+    void setScreenResources(XRRScreenResources *scrres);
+    void updateInfo();
+    
+private:
+    Display* display;
+    Window window;
+    int id;
+    XRRScreenResources *screenResources;
+    
+    QString name;
+    XRROutputInfo *info;
+};
 
-QList< RROutput > Configuration::getOutputs()
-{
-    return screen->getOutputs();
-}
-
+#endif // OUTPUT_H

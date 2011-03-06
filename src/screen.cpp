@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
+#include <QDebug>
 #include "screen.h"
 #include "easycfg.h"
 
-EasyRandR::Screen::Screen(Display* dpy, Window window): display(dpy)
+EasyRandR::Screen::Screen(Display* dpy, Window w): display(dpy), window(w)
 {
     resources = NULL;
 #ifdef XRANDR_1_3_FOUND
@@ -28,10 +28,38 @@ EasyRandR::Screen::Screen(Display* dpy, Window window): display(dpy)
 #else
     resources = XRRGetScreenResources(display,window);
 #endif
+    info = XRRGetScreenInfo(display,window);
+    if (XRRGetScreenSizeRange(display, window, &minWidth, &minHeight, &maxWidth, &maxHeight) != Success)
+	qDebug() << "Error while getting the size of screen!";
 }
 
 EasyRandR::Screen::~Screen()
 {
     if (resources)
 	XRRFreeScreenResources(resources);
+}
+
+Time EasyRandR::Screen::configTimestamp(void)
+{
+    if (resources)
+	return resources->configTimestamp;
+    else
+	return 0;
+}
+
+QList< RROutput > EasyRandR::Screen::getOutputs(void)
+{
+    QList<RROutput> outs;
+    
+    if (resources)
+	for (int i=0; i<resources->noutput; i++) {
+	    outs.append(resources->outputs[i]);
+	}
+    
+    return outs;
+}
+
+XRRScreenResources* EasyRandR::Screen::getResources(void )
+{
+    return resources;
 }

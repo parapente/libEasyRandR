@@ -30,14 +30,20 @@ class Screen: public QObject
     Q_OBJECT
     
 public:
-    explicit Screen(Display *dpy, Window window);
+    explicit Screen(Display *dpy, Window w);
     virtual ~Screen();
+    
+    Time configTimestamp(void);
+    QList<RROutput> getOutputs(void);
+    XRRScreenResources *getResources(void);
 
 private:
     Display *display;
     Window window;
-    XRRScreenSize size;
+    
     XRRScreenResources *resources;
+    XRRScreenConfiguration *info;
+    int minWidth, minHeight, maxWidth, maxHeight;
 };
 
 }
