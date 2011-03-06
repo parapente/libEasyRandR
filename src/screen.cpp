@@ -100,3 +100,33 @@ void EasyRandR::Screen::updateResources(void )
     else
 	resValid = false;
 }
+
+Time EasyRandR::Screen::timestamp(void )
+{
+    if (resources)
+	return resources->timestamp;
+    else
+	return 0;
+}
+
+QList< RRCrtc > EasyRandR::Screen::getCrtcs(void )
+{
+    QList<RRCrtc> list;
+    
+    if (resources)
+	for (int i=0; i<resources->ncrtc; i++)
+	    list << resources->crtcs[i];
+
+    return list;
+}
+
+QList< RRMode > EasyRandR::Screen::getModes(void )
+{
+    QList<RRCrtc> list;
+    
+    if (resources)
+	for (int i=0; i<resources->nmode; i++)
+	    list << resources->modes[i];
+
+    return list;
+}

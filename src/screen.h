@@ -34,7 +34,10 @@ public:
     virtual ~Screen();
     
     Time configTimestamp(void);
+    Time timestamp(void);
     QList<RROutput> getOutputs(void);
+    QList<RRCrtc> getCrtcs(void);
+    QList<RRMode> getModes(void);
     XRRScreenResources *getResources(void);
     bool isInfoValid(void);
     bool isResValid(void);
