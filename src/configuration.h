@@ -35,7 +35,8 @@ class Configuration : public QObject
 public:
     explicit Configuration(QObject* parent = 0);
     
-    QList<RROutput> getOutputs();
+    QList<RROutput> getOutputList();
+    Output *getOutput(RROutput output);
     
 private:
     bool valid;

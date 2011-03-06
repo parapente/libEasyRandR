@@ -41,8 +41,14 @@ Configuration::Configuration(QObject* parent): QObject(parent)
     }
 }
 
-QList< RROutput > Configuration::getOutputs()
+// Returns a list with the ids of all outputs available
+QList< RROutput > Configuration::getOutputList()
 {
     return screen->getOutputs();
 }
 
+// Return a pointer to the output with id 'output'
+Output* Configuration::getOutput(RROutput output)
+{
+    return outputs.value(output);
+}
