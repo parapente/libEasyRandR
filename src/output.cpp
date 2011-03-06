@@ -58,71 +58,100 @@ bool EasyRandR::Output::isValid(void )
 
 RRCrtc EasyRandR::Output::crtc(void )
 {
-    return info->crtc;
+    if (info)
+	return info->crtc;
+    else
+	return 0;
 }
 
 Time EasyRandR::Output::timestamp(void )
 {
-    return info->timestamp;
+    if (info)
+	return info->timestamp;
+    else
+	return 0;
 }
 
 QList< RRCrtc > EasyRandR::Output::validCrtcs(void )
 {
     QList<RRCrtc> list;
     
-    for (int i=0; i<info->ncrtc; i++)
-	list << info->crtcs[i];
+    if (info)
+	for (int i=0; i<info->ncrtc; i++)
+	    list << info->crtcs[i];
+
     return list;
 }
 
 QList< RROutput > EasyRandR::Output::clones(void )
 {
     QList<RROutput> list;
-    
-    for (int i=0; i<info->nclone; i++)
-	list << info->clones[i];
+
+    if (info)
+	for (int i=0; i<info->nclone; i++)
+	    list << info->clones[i];
+
     return list;
 }
 
 QString EasyRandR::Output::name(void )
 {
-    return QString(QByteArray(info->name,info->nameLen));
+    if (info)
+	return QString(QByteArray(info->name,info->nameLen));
+    else
+	return QString();
 }
 
 Connection EasyRandR::Output::connectionStatus(void )
 {
-    return info->connection;
+    if (info)
+	return info->connection;
+    else
+	return RR_UnknownConnection;
 }
 
 QList< RRMode > EasyRandR::Output::validModes(void )
 {
     QList<RRMode> list;
     
-    for (int i=0; i<info->nmode; i++)
-	list << info->modes[i];
+    if (info)
+	for (int i=0; i<info->nmode; i++)
+	    list << info->modes[i];
+
     return list;
 }
 
 ulong EasyRandR::Output::heightmm(void )
 {
-    return info->mm_height;
+    if (info)
+	return info->mm_height;
+    else
+	return 0;
 }
 
 ulong EasyRandR::Output::widthmm(void )
 {
-    return info->mm_width;
+    if (info)
+	return info->mm_width;
+    else
+	return 0;
 }
 
 SubpixelOrder EasyRandR::Output::subpixelOrder(void )
 {
-    return info->subpixel_order;
+    if (info)
+	return info->subpixel_order;
+    else
+	return 0;
 }
 
 QList< RRMode > EasyRandR::Output::preferedModes(void )
 {
     QList<RRMode> list;
     
-    for (int i=0; i<info->npreferred; i++)
-	list << info->modes[i];
+    if (info)
+	for (int i=0; i<info->npreferred; i++)
+	    list << info->modes[i];
+
     return list;
 }
