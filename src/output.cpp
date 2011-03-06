@@ -40,9 +40,18 @@ void Output::setScreenResources(XRRScreenResources* scrres)
     screenResources = scrres;
 }
 
-void Output::updateInfo()
+void Output::updateInfo(void)
 {
     if (info)
 	XRRFreeOutputInfo(info);
     info = XRRGetOutputInfo(display,screenResources,id);
+    if (info)
+	valid = true;
+    else
+	valid = false;
+}
+
+bool Output::isValid(void )
+{
+    return valid;
 }

@@ -31,14 +31,16 @@ public:
     explicit Output(Display *dpy, Window w, int oid, XRRScreenResources *scrres);
     virtual ~Output();
     
+    bool isValid(void);
     void setScreenResources(XRRScreenResources *scrres);
-    void updateInfo();
+    void updateInfo(void);
     
 private:
     Display* display;
     Window window;
     int id;
     XRRScreenResources *screenResources;
+    bool valid;
     
     QString name;
     XRROutputInfo *info;
