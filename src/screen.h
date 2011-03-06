@@ -36,10 +36,16 @@ public:
     Time configTimestamp(void);
     QList<RROutput> getOutputs(void);
     XRRScreenResources *getResources(void);
+    bool isInfoValid(void);
+    bool isResValid(void);
+    void updateInfo(void);
+    void updateResources(void);
 
 private:
     Display *display;
     Window window;
+    bool infoValid;
+    bool resValid;
     
     XRRScreenResources *resources;
     XRRScreenConfiguration *info;

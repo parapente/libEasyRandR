@@ -23,12 +23,11 @@
 EasyRandR::Screen::Screen(Display* dpy, Window w): display(dpy), window(w)
 {
     resources = NULL;
-#ifdef XRANDR_1_3_FOUND
-    resources = XRRGetScreenResourcesCurrent(display,window);
-#else
-    resources = XRRGetScreenResources(display,window);
-#endif
-    info = XRRGetScreenInfo(display,window);
+    updateResources();
+    
+    info = NULL;
+    updateInfo();
+    
     if (XRRGetScreenSizeRange(display, window, &minWidth, &minHeight, &maxWidth, &maxHeight) != Success)
 	qDebug() << "Error while getting the size of screen!";
 }
@@ -37,6 +36,8 @@ EasyRandR::Screen::~Screen()
 {
     if (resources)
 	XRRFreeScreenResources(resources);
+    if (info)
+	XRRFreeScreenConfigInfo(info);
 }
 
 Time EasyRandR::Screen::configTimestamp(void)
@@ -62,4 +63,40 @@ QList< RROutput > EasyRandR::Screen::getOutputs(void)
 XRRScreenResources* EasyRandR::Screen::getResources(void )
 {
     return resources;
+}
+
+bool EasyRandR::Screen::isInfoValid(void )
+{
+    return infoValid;
+}
+
+void EasyRandR::Screen::updateInfo(void )
+{
+    if (info)
+	XRRFreeScreenConfigInfo(info);
+    info = XRRGetScreenInfo(display,window);
+    if (info)
+	infoValid = true;
+    else
+	infoValid = false;
+}
+
+bool EasyRandR::Screen::isResValid(void )
+{
+    return resValid;
+}
+
+void EasyRandR::Screen::updateResources(void )
+{
+    if (resources)
+	XRRFreeScreenResources(resources);
+#ifdef XRANDR_1_3_FOUND
+    resources = XRRGetScreenResourcesCurrent(display,window);
+#else
+    resources = XRRGetScreenResources(display,window);
+#endif
+    if (resources)
+	resValid = true;
+    else
+	resValid = false;
 }
