@@ -27,6 +27,13 @@ EasyRandR::Crtc::Crtc(Display* dpy, XRRScreenResources* res, RRCrtc crtc): displ
     updateInfo();
 }
 
+EasyRandR::Crtc::~Crtc()
+{
+    if (info)
+	XRRFreeCrtcInfo(info);
+}
+
+
 bool EasyRandR::Crtc::isValid(void)
 {
     return valid;
@@ -50,48 +57,75 @@ void EasyRandR::Crtc::updateInfo(void)
 
 uint EasyRandR::Crtc::height(void )
 {
-    return info->height;
+    if (info)
+	return info->height;
+    else
+	return 0;
 }
 
 uint EasyRandR::Crtc::width(void )
 {
-    return info->width;
+    if (info)
+	return info->width;
+    else
+	return 0;
 }
 
 RRMode EasyRandR::Crtc::mode(void )
 {
-    return info->mode;
+    if (info)
+	return info->mode;
+    else
+	return 0;
 }
 
 Rotation EasyRandR::Crtc::rotation(void )
 {
-    return info->rotation;
+    if (info)
+	return info->rotation;
+    else
+	return 0;
 }
 
 Rotation EasyRandR::Crtc::supportedRotations(void )
 {
-    return info->rotations;
+    if (info)
+	return info->rotations;
+    else
+	return 0;
 }
 
 QList< RROutput > EasyRandR::Crtc::connectedTo(void )
 {
     QList<RROutput> list;
-    for (int i=0; i<info->noutput; i++)
-	list << info->outputs[i];
+    
+    if (info)
+	for (int i=0; i<info->noutput; i++)
+	    list << info->outputs[i];
+
     return list;
 }
 
 Time EasyRandR::Crtc::timestamp(void )
 {
-    return info->timestamp;
+    if (info)
+	return info->timestamp;
+    else
+	return 0;
 }
 
 int EasyRandR::Crtc::x(void )
 {
-    return info->x;
+    if (info)
+	return info->x;
+    else
+	return 0;
 }
 
 int EasyRandR::Crtc::y(void )
 {
-    return info->y;
+    if (info)
+	return info->y;
+    else
+	return 0;
 }

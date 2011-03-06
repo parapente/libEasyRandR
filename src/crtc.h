@@ -29,6 +29,7 @@ class Crtc : public QObject
 {
 public:
     explicit Crtc(Display *dpy, XRRScreenResources *res, RRCrtc crtc);
+    virtual ~Crtc();
     
     bool isValid(void);
     void setScreenResources(XRRScreenResources *res);
