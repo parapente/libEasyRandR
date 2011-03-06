@@ -55,3 +55,74 @@ bool Output::isValid(void )
 {
     return valid;
 }
+
+RRCrtc Output::crtc(void )
+{
+    return info->crtc;
+}
+
+Time Output::timestamp(void )
+{
+    return info->timestamp;
+}
+
+QList< RRCrtc > Output::validCrtcs(void )
+{
+    QList<RRCrtc> list;
+    
+    for (int i=0; i<info->ncrtc; i++)
+	list << info->crtcs[i];
+    return list;
+}
+
+QList< RROutput > Output::clones(void )
+{
+    QList<RROutput> list;
+    
+    for (int i=0; i<info->nclone; i++)
+	list << info->clones[i];
+    return list;
+}
+
+QString Output::name(void )
+{
+    return QString(QByteArray(info->name,info->nameLen));
+}
+
+Connection Output::connectionStatus(void )
+{
+    return info->connection;
+}
+
+QList< RRMode > Output::validModes(void )
+{
+    QList<RRMode> list;
+    
+    for (int i=0; i<info->nmode; i++)
+	list << info->modes[i];
+    return list;
+}
+
+ulong Output::heightmm(void )
+{
+    return info->mm_height;
+}
+
+ulong Output::widthmm(void )
+{
+    return info->mm_width;
+}
+
+SubpixelOrder Output::subpixelOrder(void )
+{
+    return info->subpixel_order;
+}
+
+QList< RRMode > Output::preferedModes(void )
+{
+    QList<RRMode> list;
+    
+    for (int i=0; i<info->npreferred; i++)
+	list << info->modes[i];
+    return list;
+}

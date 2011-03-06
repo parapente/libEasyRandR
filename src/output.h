@@ -34,6 +34,17 @@ public:
     bool isValid(void);
     void setScreenResources(XRRScreenResources *scrres);
     void updateInfo(void);
+    QList<RROutput> clones(void);
+    QList<RRCrtc> validCrtcs(void);
+    RRCrtc crtc(void);
+    Time timestamp(void);
+    QString name(void);
+    QList<RRMode> validModes(void);
+    Connection connectionStatus(void);
+    ulong heightmm(void);
+    ulong widthmm(void);
+    SubpixelOrder subpixelOrder(void);
+    QList<RRMode> preferedModes(void);
     
 private:
     Display* display;
@@ -41,8 +52,6 @@ private:
     int id;
     XRRScreenResources *screenResources;
     bool valid;
-    
-    QString name;
     XRROutputInfo *info;
 };
 
