@@ -20,7 +20,7 @@
 #include "configuration.h"
 #include <X11/Xlib.h>
 
-Configuration::Configuration(QObject* parent): QObject(parent)
+EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
 {
     valid = false;
     display = XOpenDisplay(NULL);
@@ -46,21 +46,21 @@ Configuration::Configuration(QObject* parent): QObject(parent)
     }
 }
 
-Configuration::~Configuration()
+EasyRandR::Configuration::~Configuration()
 {
     XCloseDisplay(display);
 }
 
 
 // Returns a list with the ids of all outputs available
-QList< RROutput > Configuration::getOutputList()
+QList< RROutput > EasyRandR::Configuration::getOutputList()
 {
     return screen->getOutputs();
 }
 
 // Return a pointer to the output with id 'output'. If an output with such id
 // don't exist, it will return a 0
-Output* Configuration::getOutput(RROutput output)
+EasyRandR::Output* EasyRandR::Configuration::getOutput(RROutput output)
 {
     return outputs.value(output);
 }

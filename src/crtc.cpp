@@ -19,7 +19,7 @@
 
 #include "crtc.h"
 
-Crtc::Crtc(Display* dpy, XRRScreenResources* res, RRCrtc crtc): display(dpy),
+EasyRandR::Crtc::Crtc(Display* dpy, XRRScreenResources* res, RRCrtc crtc): display(dpy),
 								screenResources(res),
 								id(crtc)
 {
@@ -27,17 +27,17 @@ Crtc::Crtc(Display* dpy, XRRScreenResources* res, RRCrtc crtc): display(dpy),
     updateInfo();
 }
 
-bool Crtc::isValid(void)
+bool EasyRandR::Crtc::isValid(void)
 {
     return valid;
 }
 
-void Crtc::setScreenResources(XRRScreenResources* res)
+void EasyRandR::Crtc::setScreenResources(XRRScreenResources* res)
 {
     screenResources = res;
 }
 
-void Crtc::updateInfo(void)
+void EasyRandR::Crtc::updateInfo(void)
 {
     if (info)
 	XRRFreeCrtcInfo(info);
@@ -48,32 +48,32 @@ void Crtc::updateInfo(void)
 	valid = false;
 }
 
-uint Crtc::height(void )
+uint EasyRandR::Crtc::height(void )
 {
     return info->height;
 }
 
-uint Crtc::width(void )
+uint EasyRandR::Crtc::width(void )
 {
     return info->width;
 }
 
-RRMode Crtc::mode(void )
+RRMode EasyRandR::Crtc::mode(void )
 {
     return info->mode;
 }
 
-Rotation Crtc::rotation(void )
+Rotation EasyRandR::Crtc::rotation(void )
 {
     return info->rotation;
 }
 
-Rotation Crtc::supportedRotations(void )
+Rotation EasyRandR::Crtc::supportedRotations(void )
 {
     return info->rotations;
 }
 
-QList< RROutput > Crtc::connectedTo(void )
+QList< RROutput > EasyRandR::Crtc::connectedTo(void )
 {
     QList<RROutput> list;
     for (int i=0; i<info->noutput; i++)
@@ -81,17 +81,17 @@ QList< RROutput > Crtc::connectedTo(void )
     return list;
 }
 
-Time Crtc::timestamp(void )
+Time EasyRandR::Crtc::timestamp(void )
 {
     return info->timestamp;
 }
 
-int Crtc::x(void )
+int EasyRandR::Crtc::x(void )
 {
     return info->x;
 }
 
-int Crtc::y(void )
+int EasyRandR::Crtc::y(void )
 {
     return info->y;
 }

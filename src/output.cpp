@@ -20,7 +20,7 @@
 #include "output.h"
 #include "screen.h"
 
-Output::Output(Display* dpy, Window w, int oid, XRRScreenResources *scrres): display(dpy),
+EasyRandR::Output::Output(Display* dpy, Window w, int oid, XRRScreenResources *scrres): display(dpy),
 									    window(w),
 									    id(oid),
 									    screenResources(scrres)
@@ -29,18 +29,18 @@ Output::Output(Display* dpy, Window w, int oid, XRRScreenResources *scrres): dis
     updateInfo();
 }
 
-Output::~Output()
+EasyRandR::Output::~Output()
 {
     if (info)
 	XRRFreeOutputInfo(info);
 }
 
-void Output::setScreenResources(XRRScreenResources* scrres)
+void EasyRandR::Output::setScreenResources(XRRScreenResources* scrres)
 {
     screenResources = scrres;
 }
 
-void Output::updateInfo(void)
+void EasyRandR::Output::updateInfo(void)
 {
     if (info)
 	XRRFreeOutputInfo(info);
@@ -51,22 +51,22 @@ void Output::updateInfo(void)
 	valid = false;
 }
 
-bool Output::isValid(void )
+bool EasyRandR::Output::isValid(void )
 {
     return valid;
 }
 
-RRCrtc Output::crtc(void )
+RRCrtc EasyRandR::Output::crtc(void )
 {
     return info->crtc;
 }
 
-Time Output::timestamp(void )
+Time EasyRandR::Output::timestamp(void )
 {
     return info->timestamp;
 }
 
-QList< RRCrtc > Output::validCrtcs(void )
+QList< RRCrtc > EasyRandR::Output::validCrtcs(void )
 {
     QList<RRCrtc> list;
     
@@ -75,7 +75,7 @@ QList< RRCrtc > Output::validCrtcs(void )
     return list;
 }
 
-QList< RROutput > Output::clones(void )
+QList< RROutput > EasyRandR::Output::clones(void )
 {
     QList<RROutput> list;
     
@@ -84,17 +84,17 @@ QList< RROutput > Output::clones(void )
     return list;
 }
 
-QString Output::name(void )
+QString EasyRandR::Output::name(void )
 {
     return QString(QByteArray(info->name,info->nameLen));
 }
 
-Connection Output::connectionStatus(void )
+Connection EasyRandR::Output::connectionStatus(void )
 {
     return info->connection;
 }
 
-QList< RRMode > Output::validModes(void )
+QList< RRMode > EasyRandR::Output::validModes(void )
 {
     QList<RRMode> list;
     
@@ -103,22 +103,22 @@ QList< RRMode > Output::validModes(void )
     return list;
 }
 
-ulong Output::heightmm(void )
+ulong EasyRandR::Output::heightmm(void )
 {
     return info->mm_height;
 }
 
-ulong Output::widthmm(void )
+ulong EasyRandR::Output::widthmm(void )
 {
     return info->mm_width;
 }
 
-SubpixelOrder Output::subpixelOrder(void )
+SubpixelOrder EasyRandR::Output::subpixelOrder(void )
 {
     return info->subpixel_order;
 }
 
-QList< RRMode > Output::preferedModes(void )
+QList< RRMode > EasyRandR::Output::preferedModes(void )
 {
     QList<RRMode> list;
     

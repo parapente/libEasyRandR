@@ -23,6 +23,8 @@
 #include <QObject>
 #include <X11/extensions/Xrandr.h>
 
+namespace EasyRandR {
+    
 class Crtc : public QObject
 {
 public:
@@ -49,4 +51,5 @@ private:
     bool valid;
 };
 
+}
 #endif // CRTC_H

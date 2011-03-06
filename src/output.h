@@ -23,6 +23,8 @@
 #include <QObject>
 #include <X11/extensions/Xrandr.h>
 
+namespace EasyRandR {
+    
 class Output : public QObject
 {
     Q_OBJECT
@@ -55,4 +57,5 @@ private:
     XRROutputInfo *info;
 };
 
+}
 #endif // OUTPUT_H

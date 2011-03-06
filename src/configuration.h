@@ -28,6 +28,8 @@
 #include "output.h"
 #include <QMap>
 
+namespace EasyRandR{
+    
 class Configuration : public QObject
 {
     Q_OBJECT
@@ -51,4 +53,5 @@ private:
     QMap<int,Output*> outputs;
 };
 
+}
 #endif // CONFIGURATION_H
