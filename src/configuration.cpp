@@ -18,15 +18,20 @@
 
 
 #include "configuration.h"
-#include <QX11Info>
+#include <X11/Xlib.h>
 
 Configuration::Configuration(QObject* parent): QObject(parent)
 {
-    display = QX11Info::display();
-    window = QX11Info::appRootWindow();
+    valid = false;
+    display = XOpenDisplay(NULL);
     
-    // Check if we can use the RandR Extension
-    valid = XRRQueryExtension(display, &eventBase, &errorBase);
+    // If we can open a connection to the X server
+    if (display) {
+	window = XDefaultRootWindow(display);
+	
+	// Check if we can use the RandR Extension
+	valid = XRRQueryExtension(display, &eventBase, &errorBase);
+    }
     
     if (valid) {
 	// Get version supported by the XServer
@@ -41,13 +46,20 @@ Configuration::Configuration(QObject* parent): QObject(parent)
     }
 }
 
+Configuration::~Configuration()
+{
+    XCloseDisplay(display);
+}
+
+
 // Returns a list with the ids of all outputs available
 QList< RROutput > Configuration::getOutputList()
 {
     return screen->getOutputs();
 }
 
-// Return a pointer to the output with id 'output'
+// Return a pointer to the output with id 'output'. If an output with such id
+// don't exist, it will return a 0
 Output* Configuration::getOutput(RROutput output)
 {
     return outputs.value(output);

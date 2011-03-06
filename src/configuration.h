@@ -34,6 +34,7 @@ class Configuration : public QObject
 
 public:
     explicit Configuration(QObject* parent = 0);
+    virtual ~Configuration();
     
     QList<RROutput> getOutputList();
     Output *getOutput(RROutput output);
