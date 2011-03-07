@@ -120,9 +120,9 @@ QList< RRCrtc > EasyRandR::Screen::getCrtcs(void )
     return list;
 }
 
-QList< RRMode > EasyRandR::Screen::getModes(void )
+QList< XRRModeInfo > EasyRandR::Screen::getModes(void )
 {
-    QList<RRCrtc> list;
+    QList<XRRModeInfo> list;
     
     if (resources)
 	for (int i=0; i<resources->nmode; i++)

@@ -37,7 +37,7 @@ public:
     Time timestamp(void);
     QList<RROutput> getOutputs(void);
     QList<RRCrtc> getCrtcs(void);
-    QList<RRMode> getModes(void);
+    QList< XRRModeInfo > getModes(void);
     XRRScreenResources *getResources(void);
     bool isInfoValid(void);
     bool isResValid(void);
