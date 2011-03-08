@@ -49,6 +49,7 @@ Time EasyRandR::Screen::configTimestamp(void)
 	return 0;
 }
 
+/* Returns the available outputs for this screen */
 QList< RROutput > EasyRandR::Screen::getOutputs(void)
 {
     QList<RROutput> outs;
