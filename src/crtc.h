@@ -27,6 +27,8 @@ namespace EasyRandR {
     
 class Crtc : public QObject
 {
+    Q_OBJECT
+    
 public:
     explicit Crtc(Display *dpy, XRRScreenResources *res, RRCrtc crtc);
     virtual ~Crtc();
