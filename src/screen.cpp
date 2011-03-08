@@ -28,8 +28,9 @@ EasyRandR::Screen::Screen(Display* dpy, Window w): display(dpy), window(w)
     info = NULL;
     updateInfo();
     
-    if (XRRGetScreenSizeRange(display, window, &minWidth, &minHeight, &maxWidth, &maxHeight) != Success)
+    if (XRRGetScreenSizeRange(display, window, &minWidth, &minHeight, &maxWidth, &maxHeight) != 1)
 	qDebug() << "Error while getting the size of screen!";
+    qDebug() << minWidth << minHeight << maxWidth << maxHeight;
 }
 
 EasyRandR::Screen::~Screen()
