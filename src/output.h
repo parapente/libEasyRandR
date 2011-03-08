@@ -23,7 +23,9 @@
 #include <QObject>
 #include <QMap>
 #include <X11/extensions/Xrandr.h>
+#include <X11/extensions/randr.h>
 #include "screen.h"
+#include "crtc.h"
 
 namespace EasyRandR {
     
@@ -49,6 +51,15 @@ public:
     SubpixelOrder subpixelOrder(void);
     QList<RRMode> preferedModes(void);
     
+    // Functions using Crtc object
+    Rotation validRotations(void);
+    Rotation currentRotation(void);
+    uint width(void);
+    uint height(void);
+    int x(void);
+    int y(void);
+    RRMode currentMode(void);
+    
 private:
     Display* display;
     Window window;
@@ -56,6 +67,7 @@ private:
     Screen *screen;
     bool valid;
     XRROutputInfo *info;
+    Crtc *pcrtc;
 };
 
 }

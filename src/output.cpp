@@ -27,6 +27,9 @@ EasyRandR::Output::Output(Display* dpy, Window w, int oid, Screen *scr): display
 {
     info = NULL;
     updateInfo();
+    if (info && screen->isResValid()) {
+	pcrtc = new Crtc(display,screen->getResources(),info->crtc);
+    }
 }
 
 EasyRandR::Output::~Output()
@@ -167,4 +170,60 @@ QList< RRMode > EasyRandR::Output::preferedModes(void )
 	    list << info->modes[i];
 
     return list;
+}
+
+RRMode EasyRandR::Output::currentMode(void )
+{
+    if (pcrtc)
+	return pcrtc->mode();
+    else
+	return 0;
+}
+
+uint EasyRandR::Output::height(void )
+{
+    if (pcrtc)
+	return pcrtc->height();
+    else
+	return 0;
+}
+
+uint EasyRandR::Output::width(void )
+{
+    if (pcrtc)
+	return pcrtc->width();
+    else
+	return 0;
+}
+
+int EasyRandR::Output::x(void )
+{
+    if (pcrtc)
+	return pcrtc->x();
+    else
+	return 0;
+}
+
+int EasyRandR::Output::y(void )
+{
+    if (pcrtc)
+	return pcrtc->y();
+    else
+	return 0;
+}
+
+Rotation EasyRandR::Output::currentRotation(void )
+{
+    if (pcrtc)
+	return pcrtc->rotation();
+    else
+	return RR_Rotate_0;
+}
+
+Rotation EasyRandR::Output::validRotations(void )
+{
+    if (pcrtc)
+	return pcrtc->supportedRotations();
+    else
+	return 0;
 }
