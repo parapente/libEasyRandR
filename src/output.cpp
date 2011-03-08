@@ -17,13 +17,13 @@
 */
 
 
+#include <QDebug>
 #include "output.h"
-#include "screen.h"
 
-EasyRandR::Output::Output(Display* dpy, Window w, int oid, XRRScreenResources *scrres): display(dpy),
+EasyRandR::Output::Output(Display* dpy, Window w, int oid, Screen *scr): display(dpy),
 									    window(w),
 									    id(oid),
-									    screenResources(scrres)
+									    screen(scr)
 {
     info = NULL;
     updateInfo();
@@ -35,20 +35,17 @@ EasyRandR::Output::~Output()
 	XRRFreeOutputInfo(info);
 }
 
-void EasyRandR::Output::setScreenResources(XRRScreenResources* scrres)
-{
-    screenResources = scrres;
-}
-
 void EasyRandR::Output::updateInfo(void)
 {
     if (info)
 	XRRFreeOutputInfo(info);
-    info = XRRGetOutputInfo(display,screenResources,id);
+    info = XRRGetOutputInfo(display,screen->getResources(),id);
     if (info)
 	valid = true;
-    else
+    else {
+	qDebug() << "Can't get info!";
 	valid = false;
+    }
 }
 
 bool EasyRandR::Output::isValid(void )
@@ -97,7 +94,7 @@ QList< RROutput > EasyRandR::Output::clones(void )
 QString EasyRandR::Output::name(void )
 {
     if (info)
-	return QString(QByteArray(info->name,info->nameLen));
+	return QString::fromUtf8(info->name);
     else
 	return QString();
 }
@@ -110,15 +107,31 @@ Connection EasyRandR::Output::connectionStatus(void )
 	return RR_UnknownConnection;
 }
 
-QList< RRMode > EasyRandR::Output::validModes(void )
+QMap<RRMode,QString> EasyRandR::Output::validModes(void )
 {
     QList<RRMode> list;
+    QMap<RRMode,QString> map;
     
-    if (info)
+    if (info) {
+	// Get the valid modes for the output
 	for (int i=0; i<info->nmode; i++)
 	    list << info->modes[i];
+	
+	// Get the valid modes for the screen
+	QList<XRRModeInfo> mlist;
+	mlist = screen->getModes();
+	
+	// Create the map of modes that contains keys in the form of RRMode,Modename
+	for (int i=0; i<list.count(); i++) {
+	    QString Modename;
+	    for (int j=0; j<mlist.count(); j++)
+		if (list[i] == mlist[j].id)
+		    Modename = QString::fromUtf8(mlist[i].name);
+	    map.insert(list[i],Modename);
+	}
+    }
 
-    return list;
+    return map;
 }
 
 ulong EasyRandR::Output::heightmm(void )

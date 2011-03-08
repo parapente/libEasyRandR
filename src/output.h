@@ -21,7 +21,9 @@
 #define OUTPUT_H
 
 #include <QObject>
+#include <QMap>
 #include <X11/extensions/Xrandr.h>
+#include "screen.h"
 
 namespace EasyRandR {
     
@@ -30,18 +32,17 @@ class Output : public QObject
     Q_OBJECT
     
 public:
-    explicit Output(Display *dpy, Window w, int oid, XRRScreenResources *scrres);
+    explicit Output(Display* dpy, Window w, int oid, EasyRandR::Screen* scrres);
     virtual ~Output();
     
     bool isValid(void);
-    void setScreenResources(XRRScreenResources *scrres);
     void updateInfo(void);
     QList<RROutput> clones(void);
     QList<RRCrtc> validCrtcs(void);
     RRCrtc crtc(void);
     Time timestamp(void);
     QString name(void);
-    QList<RRMode> validModes(void);
+    QMap<RRMode,QString> validModes(void);
     Connection connectionStatus(void);
     ulong heightmm(void);
     ulong widthmm(void);
@@ -52,7 +53,7 @@ private:
     Display* display;
     Window window;
     int id;
-    XRRScreenResources *screenResources;
+    Screen *screen;
     bool valid;
     XRROutputInfo *info;
 };
