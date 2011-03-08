@@ -41,7 +41,7 @@ EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
 	QList<RROutput> outs;
 	outs = screen->getOutputs();
 	for (int i=0; i<outs.count(); i++) {
-	    outputs.insert(outs[i], new Output(display, window, outs[i], screen->getResources()));
+	    outputs.insert(outs[i], new Output(display, window, outs[i], screen));
 	}
     }
 }
@@ -53,14 +53,7 @@ EasyRandR::Configuration::~Configuration()
 
 
 // Returns a list with the ids of all outputs available
-QList< RROutput > EasyRandR::Configuration::getOutputList()
+QMap<RROutput,EasyRandR::Output*> EasyRandR::Configuration::getOutputs()
 {
-    return screen->getOutputs();
-}
-
-// Return a pointer to the output with id 'output'. If an output with such id
-// don't exist, it will return a 0
-EasyRandR::Output* EasyRandR::Configuration::getOutput(RROutput output)
-{
-    return outputs.value(output);
+    return outputs;
 }

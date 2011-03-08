@@ -21,12 +21,12 @@
 #define CONFIGURATION_H
 
 #include <QObject>
+#include <QMap>
 #include <X11/extensions/randrproto.h>
 #include <X11/extensions/Xrandr.h>
 #include <X11/Xproto.h>
 #include "screen.h"
 #include "output.h"
-#include <QMap>
 
 namespace EasyRandR{
     
@@ -38,8 +38,7 @@ public:
     explicit Configuration(QObject* parent = 0);
     virtual ~Configuration();
     
-    QList<RROutput> getOutputList();
-    Output *getOutput(RROutput output);
+    QMap<RROutput,Output*> getOutputs();
     
 private:
     bool valid;
@@ -50,7 +49,7 @@ private:
     Window window;
 
     EasyRandR::Screen *screen;
-    QMap<int,Output*> outputs;
+    QMap<RROutput,Output*> outputs;
 };
 
 }
