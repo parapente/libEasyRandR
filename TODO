@@ -1,0 +1,14 @@
+RandR
+-----
+Major:
+* Support changing settings (for now we can only read the current settings)
+
+Normal:
+* Auto-update screen, output & screen configuration when possible
+
+Minor:
+* Support v1.4 of extension
+
+NVCtl
+-----
+* Add support for nvidia extension settings
