@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDebug>
+#include <QTextStream>
 #include "screen.h"
 #include "easycfg.h"
 
@@ -27,10 +27,10 @@ EasyRandR::Screen::Screen(Display* dpy, Window w): display(dpy), window(w)
     
     info = NULL;
     updateInfo();
+    QTextStream err(stderr);
     
     if (XRRGetScreenSizeRange(display, window, &minWidth, &minHeight, &maxWidth, &maxHeight) != 1)
-	qDebug() << "Error while getting the size of screen!";
-    qDebug() << minWidth << minHeight << maxWidth << maxHeight;
+	err << "Error while getting the size of screen!\n";
 }
 
 EasyRandR::Screen::~Screen()

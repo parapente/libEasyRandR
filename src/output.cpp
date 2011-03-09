@@ -27,7 +27,7 @@ EasyRandR::Output::Output(Display* dpy, Window w, int oid, Screen *scr): display
 {
     info = NULL;
     updateInfo();
-    if (info && screen->isResValid()) {
+    if (info && screen->isResValid() && (info->crtc!=0)) {
 	pcrtc = new Crtc(display,screen->getResources(),info->crtc);
     }
 }
