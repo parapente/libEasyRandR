@@ -124,3 +124,18 @@ int EasyRandR::Crtc::y(void )
     else
 	return 0;
 }
+
+int EasyRandR::Crtc::setCrtcConfig(int x, int y, RRMode mode, Rotation rotation, QList< RROutput > outputs )
+{
+    int ret;
+    
+    RROutput *outs = new RROutput[4];
+    
+    for (int i=0; i<outputs.count(); i++)
+	outs[i] = outputs.at(i);
+    updateInfo();
+    ret = XRRSetCrtcConfig(display,screen->getResources(),id,timestamp(),x,y,mode,rotation,outs,outputs.count());
+    
+    delete outs;
+    return ret;
+}

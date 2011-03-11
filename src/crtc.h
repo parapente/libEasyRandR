@@ -115,6 +115,18 @@ public:
      **/
     int y(void);
     
+    /**
+     * @brief Tries to set a new configuration for this Crtc and returns the result of this try
+     *
+     * @param x holds the x coordinate in screen space
+     * @param y holds the y coordinate in screen space
+     * @param mode is the id of the new mode for the crtc
+     * @param rotation holds the new rotation/reflection
+     * @param outputs is the list of outputs using this crtc
+     * @return int
+     **/
+    int setCrtcConfig(int x, int y, RRMode mode, Rotation rotation, QList<RROutput> outputs);
+    
 private:
     Display *display;
     EasyRandR::Screen *screen;
