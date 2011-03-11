@@ -9,6 +9,8 @@ set(libeasyrandr_HDRS crtc.h output.h configuration.h screen.h)
 
 QT4_WRAP_CPP(libeasyrandr_MOC_SRCS ${libeasyrandr_HDRS})
 
-add_library(libeasyrandr ${libeasyrandr_SRCS} ${libeasyrandr_MOC_SRCS})
+add_library(easyrandr ${libeasyrandr_SRCS} ${libeasyrandr_MOC_SRCS})
+install(TARGETS easyrandr EXPORT easyrandr DESTINATION lib)
+install(EXPORT easyrandr NAMESPACE EasyRandR DESTINATION lib/easyrandr)
 
 add_subdirectory(test)

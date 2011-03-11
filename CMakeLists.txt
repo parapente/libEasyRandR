@@ -24,5 +24,8 @@ find_package(Qt4 REQUIRED)
 include_directories( ${X11_INCLUDE_DIR} ${QT_INCLUDE_DIR}
 		     ${QT_QTCORE_INCLUDE_DIR} )
 
+install(DIRECTORY src/ DESTINATION include/easyrandr
+          FILES_MATCHING PATTERN "*.h")
+
 add_subdirectory(src)
 add_subdirectory(doc)
