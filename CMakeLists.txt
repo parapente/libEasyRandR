@@ -25,3 +25,4 @@ include_directories( ${X11_INCLUDE_DIR} ${QT_INCLUDE_DIR}
 		     ${QT_QTCORE_INCLUDE_DIR} )
 
 add_subdirectory(src)
+add_subdirectory(doc)
