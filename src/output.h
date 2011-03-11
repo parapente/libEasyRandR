@@ -29,6 +29,11 @@
 
 namespace EasyRandR {
     
+/**
+ * @brief Graphics card output
+ * It represents one output from the set outputs from all graphics cards
+ * attached to the system.
+ **/
 class Output : public QObject
 {
     Q_OBJECT
@@ -37,27 +42,156 @@ public:
     explicit Output(Display* dpy, Window w, int oid, EasyRandR::Screen* scrres);
     virtual ~Output();
     
+    /**
+     * @brief Returns true if the information available is valid, false otherwise.
+     *
+     * @return bool
+     **/
     bool isValid(void);
+    
+    /**
+     * @brief Refresh the output info
+     *
+     * @return void
+     **/
     void updateInfo(void);
+    
+    /**
+     * @brief Returns the list of output ids that are clones of this output
+     *
+     * @return QList< RROutput >
+     **/
     QList<RROutput> clones(void);
+    
+    /**
+     * @brief Returns the list of valid crtc connections
+     *
+     * @return QList< RRCrtc >
+     **/
     QList<RRCrtc> validCrtcs(void);
+    
+    /**
+     * @brief Returns the crtc id this output is connected to.
+     *
+     * @return RRCrtc
+     **/
     RRCrtc crtc(void);
+    
+    /**
+     * @brief Gives the time of the last change of the output
+     *
+     * @return Time
+     **/
     Time timestamp(void);
+    
+    /**
+     * @brief Returns the name of the output
+     *
+     * @return QString
+     **/
     QString name(void);
+    
+    /**
+     * @brief Returns a map of all valid modes.
+     * The map uses the mode id as key and the mode name as value.
+     *
+     * @return QMap< RRMode, QString >
+     **/
     QMap<RRMode,QString> validModes(void);
+    
+    /**
+     * @brief Returns the status of the output connection.
+     * It can be either connected, disconnected or unknown, so the
+     * returned value will be RR_Connected, RR_Disconnected or
+     * RR_UnknownConnection. Their values are declared in randr.h.
+     *
+     * @return Connection
+     **/
     Connection connectionStatus(void);
+    
+    /**
+     * @brief The height of the output in mm
+     *
+     * @return ulong
+     **/
     ulong heightmm(void);
+    
+    /**
+     * @brief The width of the output in mm
+     *
+     * @return ulong
+     **/
     ulong widthmm(void);
+    
+    /**
+     * @brief Gives the subpixel order of the output
+     *
+     * @return SubpixelOrder
+     **/
     SubpixelOrder subpixelOrder(void);
+    
+    /**
+     * @brief Gives the ouput's prefered modes.
+     * Some modes are prefered over others as they will give the
+     * best possible result. Using this method you can get a list
+     * of all the prefered modes' ids.
+     *
+     * @return QList< RRMode >
+     **/
     QList<RRMode> preferedModes(void);
     
     // Functions using Crtc object
+    /**
+     * @brief Returns all valid rotation settings for this output.
+     * The value returned contains a mask of all the available settings.
+     * You can use bitwise operations to extract which setting can be used,
+     * using the RR_Rotate* and RR_Reflect* values from randr.h
+     *
+     * @return Rotation
+     **/
     Rotation validRotations(void);
+    
+    /**
+     * @brief Returns the current rotation & reflect setting
+     *
+     * @return Rotation
+     **/
     Rotation currentRotation(void);
+    
+    /**
+     * @brief The width of the output in pixels
+     *
+     * @return uint
+     **/
     uint width(void);
+    
+    /**
+     * @brief The height of the output in pixels
+     *
+     * @return uint
+     **/
     uint height(void);
+    
+    /**
+     * @brief The x position of the output in the virtual framebuffer called screen
+     *
+     * @param  ...
+     * @return int
+     **/
     int x(void);
+    
+    /**
+     * @brief The y position of the output in the virtual framebuffer called screen
+     *
+     * @return int
+     **/
     int y(void);
+    
+    /**
+     * @brief Get the id of the current mode used by the output
+     *
+     * @return RRMode
+     **/
     RRMode currentMode(void);
     
 private:
