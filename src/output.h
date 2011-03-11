@@ -31,6 +31,7 @@ namespace EasyRandR {
     
 /**
  * @brief Graphics card output
+ * 
  * It represents one output from the set outputs from all graphics cards
  * attached to the system.
  **/
@@ -93,6 +94,7 @@ public:
     
     /**
      * @brief Returns a map of all valid modes.
+     * 
      * The map uses the mode id as key and the mode name as value.
      *
      * @return QMap< RRMode, QString >
@@ -101,6 +103,7 @@ public:
     
     /**
      * @brief Returns the status of the output connection.
+     * 
      * It can be either connected, disconnected or unknown, so the
      * returned value will be RR_Connected, RR_Disconnected or
      * RR_UnknownConnection. Their values are declared in randr.h.
@@ -132,6 +135,7 @@ public:
     
     /**
      * @brief Gives the ouput's prefered modes.
+     * 
      * Some modes are prefered over others as they will give the
      * best possible result. Using this method you can get a list
      * of all the prefered modes' ids.
@@ -143,6 +147,7 @@ public:
     // Functions using Crtc object
     /**
      * @brief Returns all valid rotation settings for this output.
+     * 
      * The value returned contains a mask of all the available settings.
      * You can use bitwise operations to extract which setting can be used,
      * using the RR_Rotate* and RR_Reflect* values from randr.h

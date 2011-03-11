@@ -32,6 +32,7 @@ namespace EasyRandR{
     
 /**
  * @brief The heart of libEasyRandR.
+ * 
  * You need to create one configuration object to be able to handle all
  * the other objects of the library.
  **/
@@ -45,6 +46,7 @@ public:
 
     /**
      * @brief Returns a mapping of the outputs.
+     * 
      * The QMap returned will use as key the Output id and every key will have as
      * value an object
      *
