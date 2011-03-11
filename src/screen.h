@@ -26,6 +26,13 @@
 
 namespace EasyRandR {
     
+/**
+  * @brief Use this class to access the randr screen
+  * 
+  * This isn't a real screen but a virtual space where all graphics are being
+  * rendered. Crtcs display parts of this framebuffer to different outputs. You
+  * shouldn't normally use objects of this class.
+  **/
 class Screen: public QObject
 {
     Q_OBJECT
@@ -34,15 +41,85 @@ public:
     explicit Screen(Display *dpy, Window w);
     virtual ~Screen();
     
+    /**
+     * @brief Returns the last screen config timestamp
+     *
+     * @return Time
+     **/
     Time configTimestamp(void);
+    
+    /**
+     * @brief Returns the last timestamp
+     *
+     * @return Time
+     **/
     Time timestamp(void);
+    
+    /**
+     * @brief Get the list of available outputs
+     *
+     * The list contains the output ids of all available outputs
+     * 
+     * @return QList< RROutput >
+     **/
     QList<RROutput> getOutputs(void);
+    
+    /**
+     * @brief Get the list of available Crtcs
+     *
+     * The list contains the output ids of all available crtcs
+     * 
+     * @return QList< RRCrtc >
+     **/
     QList<RRCrtc> getCrtcs(void);
+    
+    /**
+     * @brief Get a list of available modes
+     *
+     * The list contains the info of all supported modes by the screen. This
+     * list contains all available modes, even some not supported by all
+     * outputs.
+     * 
+     * @return QList< XRRModeInfo >
+     **/
     QList< XRRModeInfo > getModes(void);
+    
+    /**
+     * @brief Get the screen resources
+     * 
+     * The screen resources structure cannot be used directly but is needed
+     * by many functions for crtcs and outputs.
+     *
+     * @return XRRScreenResources*
+     **/
     XRRScreenResources *getResources(void);
+    
+    /**
+     * @brief Returns true if screen info is valid, false otherwise
+     *
+     * @return bool
+     **/
     bool isInfoValid(void);
+    
+    /**
+     * @brief Returns true if screen resources are valid, false otherwise
+     *
+     * @return bool
+     **/
     bool isResValid(void);
+    
+    /**
+     * @brief Updates the screen info
+     *
+     * @return void
+     **/
     void updateInfo(void);
+    
+    /**
+     * @brief Updates the screen resources
+     *
+     * @return void
+     **/
     void updateResources(void);
     
     /**
