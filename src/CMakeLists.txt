@@ -6,6 +6,7 @@ configure_file (easycfg.h.cmake
 
 set(libeasyrandr_SRCS crtc.cpp output.cpp configuration.cpp screen.cpp)
 set(libeasyrandr_HDRS crtc.h output.h configuration.h screen.h)
+set(BUILD_SHARED_LIBS true)
 
 QT4_WRAP_CPP(libeasyrandr_MOC_SRCS ${libeasyrandr_HDRS})
 
