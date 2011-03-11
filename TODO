@@ -8,6 +8,8 @@ Normal:
 
 Minor:
 * Support v1.4 of extension
+* Support output properties
+* Support creation/deletion of output modes
 
 NVCtl
 -----
