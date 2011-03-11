@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <X11/extensions/Xrandr.h>
+#include <QSize>
 
 namespace EasyRandR {
     
@@ -43,6 +44,16 @@ public:
     bool isResValid(void);
     void updateInfo(void);
     void updateResources(void);
+    
+    /**
+     * @brief Sets the size of the screen
+     *
+     * Returns true on success, false otherwise.
+     * 
+     * @param s holds the new size of the screen
+     * @return bool
+     **/
+    bool setSize(QSize s);
 
 private:
     Display *display;

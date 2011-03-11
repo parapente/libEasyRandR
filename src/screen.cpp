@@ -132,3 +132,20 @@ QList< XRRModeInfo > EasyRandR::Screen::getModes(void )
 
     return list;
 }
+
+bool EasyRandR::Screen::setSize(QSize s)
+{
+    if ((s.width() < minWidth) || (s.width() > maxWidth) ||
+	(s.height() < minHeight) || (s.height() > maxHeight))
+	return false;
+    else {
+	Time tmp = resources->configTimestamp;
+	XRRSetScreenSize(display,window,s.width(),s.height(),(int)((float)s.width())/96*25.4,(int)((float)s.height())/96*25.4);
+	updateInfo();
+	updateResources();
+	if (resources->configTimestamp == tmp) // If no change took place
+	    return false;
+	else
+	    return true;
+    }
+}
