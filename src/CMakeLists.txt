@@ -11,6 +11,4 @@ QT4_WRAP_CPP(libeasyrandr_MOC_SRCS ${libeasyrandr_HDRS})
 
 add_library(libeasyrandr ${libeasyrandr_SRCS} ${libeasyrandr_MOC_SRCS})
 
-add_executable(testerr main.cpp)
-
-target_link_libraries(testerr libeasyrandr ${X11_LIBRARIES} ${X11_Xrandr_LIB} ${QT_QT_LIBRARY} ${QT_QTCORE_LIBRARY})
+add_subdirectory(test)
