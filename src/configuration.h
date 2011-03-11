@@ -30,6 +30,11 @@
 
 namespace EasyRandR{
     
+/**
+* @brief The heart of libEasyRandR.
+* You need to create one configuration object to be able to handle all
+* the other objects of the library.
+**/
 class Configuration : public QObject
 {
     Q_OBJECT
@@ -37,7 +42,14 @@ class Configuration : public QObject
 public:
     explicit Configuration(QObject* parent = 0);
     virtual ~Configuration();
-    
+
+    /**
+    * @brief Returns a mapping of the outputs.
+    * The QMap returned will use as key the Output id and every key will have as
+    * value an object
+    *
+    * @return QMap<RROutput,EasyRandR::Output*>
+    **/
     QMap<RROutput,Output*> getOutputs();
     
 private:

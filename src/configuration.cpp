@@ -51,8 +51,6 @@ EasyRandR::Configuration::~Configuration()
     XCloseDisplay(display);
 }
 
-
-// Returns a list with the ids of all outputs available
 QMap<RROutput,EasyRandR::Output*> EasyRandR::Configuration::getOutputs()
 {
     return outputs;
