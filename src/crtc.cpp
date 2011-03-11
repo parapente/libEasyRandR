@@ -19,8 +19,8 @@
 
 #include "crtc.h"
 
-EasyRandR::Crtc::Crtc(Display* dpy, XRRScreenResources* res, RRCrtc crtc): display(dpy),
-								screenResources(res),
+EasyRandR::Crtc::Crtc(Display* dpy, EasyRandR::Screen* scr, RRCrtc crtc): display(dpy),
+								screen(scr),
 								id(crtc)
 {
     info = NULL;
@@ -39,16 +39,11 @@ bool EasyRandR::Crtc::isValid(void)
     return valid;
 }
 
-void EasyRandR::Crtc::setScreenResources(XRRScreenResources* res)
-{
-    screenResources = res;
-}
-
 void EasyRandR::Crtc::updateInfo(void)
 {
     if (info)
 	XRRFreeCrtcInfo(info);
-    info = XRRGetCrtcInfo(display, screenResources, id);
+    info = XRRGetCrtcInfo(display, screen->getResources(), id);
     if (info)
 	valid = true;
     else

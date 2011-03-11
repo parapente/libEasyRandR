@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <X11/extensions/Xrandr.h>
+#include "screen.h"
 
 namespace EasyRandR {
     
@@ -30,25 +31,93 @@ class Crtc : public QObject
     Q_OBJECT
     
 public:
-    explicit Crtc(Display *dpy, XRRScreenResources *res, RRCrtc crtc);
+    explicit Crtc(Display *dpy, EasyRandR::Screen *scr, RRCrtc crtc);
     virtual ~Crtc();
     
+    /**
+     * @brief Returns true if crtc info is valid, false otherwise
+     *
+     * @return bool
+     **/
     bool isValid(void);
-    void setScreenResources(XRRScreenResources *res);
+    
+    /**
+     * @brief Force update of crtc info
+     **/
     void updateInfo(void);
+    
+    /**
+     * @brief Returns the width of crtc in pixels
+     *
+     * @return uint
+     **/
     uint width(void);
+    
+    /**
+     * @brief Returns the height of crtc in pixels
+     *
+     * @return uint
+     **/
     uint height(void);
+    
+    /**
+     * @brief Returns the mode id applied to this crtc
+     *
+     * @return RRMode
+     **/
     RRMode mode(void);
+    
+    /**
+     * @brief Get what rotation and/or reflection is applied to this crtc
+     *
+     * @return Rotation
+     **/
     Rotation rotation(void);
+    
+    /**
+     * @brief Returns the supported rotations and reflections
+     *
+     * To get which rotation and reflection is supported you have to use bitwise
+     * operations using RR_Rotation* and RR_Reflection* from randr.h
+     * 
+     * @return Rotation
+     **/
     Rotation supportedRotations(void);
+    
+    /**
+     * @brief Get which outputs are connected to this crtc
+     *
+     * The returned list contains the ids of the outputs that are
+     * connected to this crtc. All these outputs are clones.
+     * 
+     * @return QList< RROutput >
+     **/
     QList<RROutput> connectedTo(void);
+    
+    /**
+     * @brief Returns the current timestamp
+     *
+     * @return Time
+     **/
     Time timestamp(void);
+    
+    /**
+     * @brief Get the x coordinate of the crtc in screen space
+     *
+     * @return int
+     **/
     int x(void);
+
+    /**
+     * @brief Get the y coordinate of the crtc in screen space
+     *
+     * @return int
+     **/
     int y(void);
     
 private:
     Display *display;
-    XRRScreenResources *screenResources;
+    EasyRandR::Screen *screen;
     RRCrtc id;
     XRRCrtcInfo *info;
     bool valid;
