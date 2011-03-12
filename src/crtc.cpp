@@ -109,7 +109,7 @@ Time EasyRandR::Crtc::timestamp(void )
 	return 0;
 }
 
-int EasyRandR::Crtc::x(void )
+uint EasyRandR::Crtc::x(void )
 {
     if (info)
 	return info->x;
@@ -117,7 +117,7 @@ int EasyRandR::Crtc::x(void )
 	return 0;
 }
 
-int EasyRandR::Crtc::y(void )
+uint EasyRandR::Crtc::y(void )
 {
     if (info)
 	return info->y;

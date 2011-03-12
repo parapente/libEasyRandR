@@ -104,16 +104,16 @@ public:
     /**
      * @brief Get the x coordinate of the crtc in screen space
      *
-     * @return int
+     * @return uint
      **/
-    int x(void);
+    uint x(void);
 
     /**
      * @brief Get the y coordinate of the crtc in screen space
      *
-     * @return int
+     * @return uint
      **/
-    int y(void);
+    uint y(void);
     
     /**
      * @brief Tries to set a new configuration for this Crtc and returns the result of this try
