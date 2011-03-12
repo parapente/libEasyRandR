@@ -26,6 +26,8 @@ EasyRandR::Output::Output(Display* dpy, Window w, int oid, Screen *scr): display
 									    screen(scr)
 {
     info = NULL;
+    positionChanged = modeChanged =  rotationChanged = outputsChanged = false;
+
     updateInfo();
     if (info && screen->isResValid() && (info->crtc!=0)) {
 	pcrtc = new Crtc(display,screen,info->crtc);
@@ -226,4 +228,47 @@ Rotation EasyRandR::Output::validRotations(void )
 	return pcrtc->supportedRotations();
     else
 	return 0;
+}
+
+bool EasyRandR::Output::setX ( uint x )
+{
+    newx = x;
+}
+
+bool EasyRandR::Output::setY ( uint y )
+{
+    newy = y;
+}
+
+bool EasyRandR::Output::setMode ( RRMode mode )
+{
+    if (validModes().contains(mode)) {
+	newmode = mode;
+	return true;
+    }
+    else
+	return false;
+}
+
+bool EasyRandR::Output::setRotation ( Rotation rotation )
+{
+    if ((rotation & validRotations()) == rotation) {
+	newrotation = rotation;
+	return true;
+    }
+    else
+	return false;
+}
+
+bool EasyRandR::Output::setOutputs ( QList< RROutput > outputs )
+{
+    bool ret = true;
+    for (int i=0; i<outputs.count(); i++)
+	if (pcrtc->possibleOutputs().indexOf(outputs[i]) == -1)
+	    ret = false;
+
+    if (ret)
+	newoutputs = outputs;
+    
+    return ret;
 }

@@ -199,6 +199,13 @@ public:
      **/
     RRMode currentMode(void);
     
+    bool setX( uint x);
+    bool setY( uint y);
+    bool setMode(RRMode mode);
+    bool setRotation(Rotation rotation);
+    bool setOutputs(QList<RROutput> outputs);
+    int applySettings(void);
+    
 private:
     Display* display;
     Window window;
@@ -207,6 +214,15 @@ private:
     bool valid;
     XRROutputInfo *info;
     Crtc *pcrtc;
+    
+    bool positionChanged;
+    bool modeChanged;
+    bool rotationChanged;
+    bool outputsChanged;
+    uint newx, newy;
+    RRMode newmode;
+    Rotation newrotation;
+    QList<RROutput> newoutputs;
 };
 
 }
