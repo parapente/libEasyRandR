@@ -1,0 +1,7 @@
+libEasyRandR
+------------
+
+This library was born due to the need for an easy way to use RandR in Qt/KDE
+projects. It defines classes for every object that is described in the RandR
+specification and tries to hide the low level details needed for communication
+and configuration of the X server.
