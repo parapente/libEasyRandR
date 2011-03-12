@@ -19,6 +19,7 @@
 
 #include <QDebug>
 #include "output.h"
+#include <QPoint>
 
 EasyRandR::Output::Output(Display* dpy, Window w, int oid, Screen *scr): display(dpy),
 									    window(w),
@@ -27,7 +28,7 @@ EasyRandR::Output::Output(Display* dpy, Window w, int oid, Screen *scr): display
 {
     info = NULL;
     positionChanged = modeChanged =  rotationChanged = outputsChanged = false;
-
+    newmode = newrotation = newx = newy = 0;
     updateInfo();
     if (info && screen->isResValid() && (info->crtc!=0)) {
 	pcrtc = new Crtc(display,screen,info->crtc);
@@ -230,20 +231,18 @@ Rotation EasyRandR::Output::validRotations(void )
 	return 0;
 }
 
-bool EasyRandR::Output::setX ( uint x )
+void EasyRandR::Output::setPos ( uint x, uint y )
 {
     newx = x;
-}
-
-bool EasyRandR::Output::setY ( uint y )
-{
     newy = y;
+    positionChanged = true;
 }
 
 bool EasyRandR::Output::setMode ( RRMode mode )
 {
     if (validModes().contains(mode)) {
 	newmode = mode;
+	modeChanged = true;
 	return true;
     }
     else
@@ -254,6 +253,7 @@ bool EasyRandR::Output::setRotation ( Rotation rotation )
 {
     if ((rotation & validRotations()) == rotation) {
 	newrotation = rotation;
+	rotationChanged = true;
 	return true;
     }
     else
@@ -267,8 +267,29 @@ bool EasyRandR::Output::setOutputs ( QList< RROutput > outputs )
 	if (pcrtc->possibleOutputs().indexOf(outputs[i]) == -1)
 	    ret = false;
 
-    if (ret)
+    if (ret) {
 	newoutputs = outputs;
+	outputsChanged = true;
+    }
     
     return ret;
+}
+
+int EasyRandR::Output::applySettings(void )
+{
+    if (!positionChanged) {
+	newx = pcrtc->x();
+	newy = pcrtc->y();
+    }
+    
+    if (!modeChanged)
+	newmode = pcrtc->mode();
+    
+    if (!rotationChanged)
+	newrotation = pcrtc->rotation();
+    
+    if (!outputsChanged)
+	newoutputs = pcrtc->connectedTo();
+    
+    return pcrtc->setCrtcConfig(newx,newy,newmode,newrotation,newoutputs);
 }

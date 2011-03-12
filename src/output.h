@@ -199,8 +199,7 @@ public:
      **/
     RRMode currentMode(void);
     
-    bool setX( uint x);
-    bool setY( uint y);
+    void setPos( uint x, uint y );
     bool setMode(RRMode mode);
     bool setRotation(Rotation rotation);
     bool setOutputs(QList<RROutput> outputs);
