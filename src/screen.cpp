@@ -20,7 +20,7 @@
 #include "screen.h"
 #include "easycfg.h"
 
-EasyRandR::Screen::Screen(Display* dpy, Window w): display(dpy), window(w)
+EasyRandR::Screen::Screen(Display* dpy, Window w, int scid): display(dpy), window(w), id(scid)
 {
     resources = NULL;
     updateResources();
@@ -148,4 +148,14 @@ bool EasyRandR::Screen::setSize(QSize s)
 	else
 	    return true;
     }
+}
+
+QSize EasyRandR::Screen::getSize ( void )
+{
+    QSize s;
+    
+    s.setWidth(DisplayWidth(display,id));
+    s.setHeight(DisplayHeight(display,id));
+    
+    return s;
 }

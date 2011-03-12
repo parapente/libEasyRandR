@@ -38,7 +38,7 @@ class Screen: public QObject
     Q_OBJECT
     
 public:
-    explicit Screen(Display *dpy, Window w);
+    explicit Screen( Display* dpy, Window w, int scid);
     virtual ~Screen();
     
     /**
@@ -131,8 +131,11 @@ public:
      * @return bool
      **/
     bool setSize(QSize s);
+    
+    QSize getSize(void);
 
 private:
+    int id;
     Display *display;
     Window window;
     bool infoValid;

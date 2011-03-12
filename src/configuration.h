@@ -49,10 +49,12 @@ public:
      * 
      * The QMap returned will use as key the Output id and every key will have as
      * value an object
+     * 
+     * @param screen is the number of the screen
      *
      * @return QMap<RROutput,EasyRandR::Output*>
      **/
-    QMap<RROutput,Output*> getOutputs();
+    QMap<RROutput,Output*> getOutputs( int screen);
     
 private:
     bool valid;
@@ -60,10 +62,10 @@ private:
     int eventBase, errorBase;
 
     Display *display;
-    Window window;
+    QList<Window> window;
 
-    EasyRandR::Screen *screen;
     QMap<RROutput,Output*> outputs;
+    QMap<int,Screen*> screens;
 };
 
 }

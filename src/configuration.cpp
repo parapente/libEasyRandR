@@ -27,8 +27,6 @@ EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
     
     // If we can open a connection to the X server
     if (display) {
-	window = XDefaultRootWindow(display);
-	
 	// Check if we can use the RandR Extension
 	valid = XRRQueryExtension(display, &eventBase, &errorBase);
     }
@@ -36,12 +34,13 @@ EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
     if (valid) {
 	// Get version supported by the XServer
 	XRRQueryVersion(display, &ver_major, &ver_minor);
-	screen = new EasyRandR::Screen(display, window);
+	int count;
 	
-	QList<RROutput> outs;
-	outs = screen->getOutputs();
-	for (int i=0; i<outs.count(); i++) {
-	    outputs.insert(outs[i], new Output(display, window, outs[i], screen));
+	count = ScreenCount(display);
+	for (int i=0; i<count; i++) {
+	    window << RootWindow(display,i);
+
+	    screens[i] = new EasyRandR::Screen(display,RootWindow(display,i),i);
 	}
     }
 }
@@ -51,7 +50,15 @@ EasyRandR::Configuration::~Configuration()
     XCloseDisplay(display);
 }
 
-QMap<RROutput,EasyRandR::Output*> EasyRandR::Configuration::getOutputs()
+QMap<RROutput,EasyRandR::Output*> EasyRandR::Configuration::getOutputs(int screen)
 {
-    return outputs;
+    if (screens.value(screen)) {
+	QList<RROutput> list = screens.value(screen)->getOutputs();
+	QMap<RROutput,EasyRandR::Output*> m;
+	for (int i=0; i<list.count(); i++)
+	    m[list.at(i)] = new EasyRandR::Output(display,window[screen],list.at(i),screens.value(screen));
+	return m;
+    }
+    else
+	return QMap<RROutput,EasyRandR::Output*>();
 }

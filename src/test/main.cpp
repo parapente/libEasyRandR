@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
     EasyRandR::Configuration cfg;
     
     QMap<RROutput,EasyRandR::Output*> outlist;
-    outlist = cfg.getOutputs();
+    outlist = cfg.getOutputs(0);
     out << outlist.count() << " outputs found!\n";
     QMapIterator<RROutput,EasyRandR::Output*> outlist_it(outlist);
     while(outlist_it.hasNext()) {
