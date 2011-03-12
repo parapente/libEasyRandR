@@ -41,6 +41,7 @@ configure_file(EasyRandRConfig.cmake.in "${PROJECT_BINARY_DIR}/EasyRandRConfig.c
 configure_file(EasyRandRVersion.cmake.in "${PROJECT_BINARY_DIR}/EasyRandRVersion.cmake" @ONLY)
 
 install(EXPORT ERRLibraryDepends DESTINATION lib/easyrandr)
-install(FILES EasyRandRConfig.cmake EasyRandRVersion.cmake DESTINATION lib/easyrandr)
+install(FILES ${PROJECT_BINARY_DIR}/EasyRandRConfig.cmake
+	      ${PROJECT_BINARY_DIR}/EasyRandRVersion.cmake DESTINATION lib/easyrandr)
 
 include(CPack)
