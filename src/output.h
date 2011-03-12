@@ -199,9 +199,52 @@ public:
      **/
     RRMode currentMode(void);
     
+    /**
+     * @brief Set the new position of the output in screen space.
+     * 
+     * Notice that this setting is not applied immedeately. It keeps the
+     * new position in memory until applySettings is called.
+     *
+     * @param x coordinate
+     * @param y coordinate
+     **/
     void setPos( uint x, uint y );
+    
+    /**
+     * @brief Sets the new mode used for this output and all it's clones.
+     *
+     * Notice that this setting is not applied immedeately. It keeps the
+     * new mode in memory until applySettings is called. Returns true if
+     * the mode can be used, false otherwise.
+     *
+     * @param mode is the new mode id
+     * @return bool
+     **/
     bool setMode(RRMode mode);
+    
+    /**
+     * @brief Sets the rotation and reflection used by this output and
+     * all it's clones.
+     * 
+     * Notice that this setting is not applied immediately. It keeps the
+     * new rotation in memory until applySettings is called. Returns true
+     * if the rotation is valid, false otherwise.
+     *
+     * @param rotation is the new rotation & reflection
+     * @return bool
+     **/
     bool setRotation(Rotation rotation);
+    
+    /**
+     * @brief Sets the list of outputs that will use the new settings.
+     * 
+     * Notice that this setting is not applied immediately. It keeps the
+     * new list in memory until applySettings is called. Returns true if
+     * the list is valid, false otherwise.
+     *
+     * @param outputs is a list of output ids
+     * @return bool
+     **/
     bool setOutputs(QList<RROutput> outputs);
     int applySettings(void);
     
