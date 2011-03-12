@@ -1,8 +1,5 @@
 RandR
 -----
-Major:
-* Support changing settings (for now we can only read the current settings)
-
 Normal:
 * Auto-update screen, output & screen configuration when possible
 
