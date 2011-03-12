@@ -1,0 +1,6 @@
+set(ERR_INCLUDE_DIRS "@ERR_INCLUDE_DIRS@")
+set(ERR_LIBRARY_DIRS "@ERR_LIB_DIR@")
+ 
+include("@ERR_CMAKE_DIR@/ERRLibraryDepends.cmake")
+ 
+set(ERR_LIBRARIES easyrandr)

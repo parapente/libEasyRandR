@@ -11,7 +11,7 @@ set(BUILD_SHARED_LIBS true)
 QT4_WRAP_CPP(libeasyrandr_MOC_SRCS ${libeasyrandr_HDRS})
 
 add_library(easyrandr ${libeasyrandr_SRCS} ${libeasyrandr_MOC_SRCS})
-install(TARGETS easyrandr EXPORT easyrandr DESTINATION lib)
-install(EXPORT easyrandr NAMESPACE EasyRandR DESTINATION lib/easyrandr)
+install(TARGETS easyrandr EXPORT ERRLibraryDepends DESTINATION lib)
+install(EXPORT ERRLibraryDepends DESTINATION lib/easyrandr)
 
 add_subdirectory(test)

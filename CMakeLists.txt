@@ -29,3 +29,18 @@ install(DIRECTORY src/ DESTINATION include/easyrandr
 
 add_subdirectory(src)
 add_subdirectory(doc)
+
+export(TARGETS easyrandr FILE "${PROJECT_BINARY_DIR}/ERRLibraryDepends.cmake")
+export(PACKAGE EasyRandR)
+
+set(ERR_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include/easyrandr)
+set(ERR_LIB_DIR ${CMAKE_INSTALL_PREFIX}/lib)
+set(ERR_CMAKE_DIR ${ERR_LIB_DIR}/easyrandr)
+
+configure_file(EasyRandRConfig.cmake.in "${PROJECT_BINARY_DIR}/EasyRandRConfig.cmake" @ONLY)
+configure_file(EasyRandRVersion.cmake.in "${PROJECT_BINARY_DIR}/EasyRandRVersion.cmake" @ONLY)
+
+install(EXPORT ERRLibraryDepends DESTINATION lib/easyrandr)
+install(FILES EasyRandRConfig.cmake EasyRandRVersion.cmake DESTINATION lib/easyrandr)
+
+include(CPack)
