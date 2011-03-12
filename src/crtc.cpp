@@ -139,3 +139,14 @@ int EasyRandR::Crtc::setCrtcConfig(int x, int y, RRMode mode, Rotation rotation,
     delete outs;
     return ret;
 }
+
+QList< RROutput > EasyRandR::Crtc::possibleOutputs ( void )
+{
+    QList<RROutput> list;
+    
+    if (info)
+	for (int i=0; i<info->npossible; i++)
+	    list << info->possible[i];
+    
+    return list;
+}

@@ -127,6 +127,15 @@ public:
      **/
     int setCrtcConfig(int x, int y, RRMode mode, Rotation rotation, QList<RROutput> outputs);
     
+    /**
+     * @brief Get possible outputs for this crtc
+     * 
+     * Returns a list of output ids that can be connected to this crtc.
+     *
+     * @return QList< RROutput >
+     **/
+    QList<RROutput> possibleOutputs(void);
+    
 private:
     Display *display;
     EasyRandR::Screen *screen;
