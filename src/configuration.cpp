@@ -62,3 +62,16 @@ QMap<RROutput,EasyRandR::Output*> EasyRandR::Configuration::getOutputs(int scree
     else
 	return QMap<RROutput,EasyRandR::Output*>();
 }
+
+QList< EasyRandR::Output* > EasyRandR::Configuration::getOutputList(int screen)
+{
+    if (screens.value(screen)) {
+	QList<RROutput> list = screens.value(screen)->getOutputs();
+	QList<EasyRandR::Output*> l;
+	for (int i=0; i<list.count(); i++)
+	    l << new EasyRandR::Output(display,window[screen],list.at(i),screens.value(screen));
+	return l;
+    }
+    else
+	return QList<EasyRandR::Output*>();
+}

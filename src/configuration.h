@@ -56,6 +56,14 @@ public:
      **/
     QMap<RROutput,Output*> getOutputs( int screen);
     
+    /**
+     * @brief Get a simple list of all outputs of a screen
+     *
+     * @param screen is the number of the screen
+     * @return QList<Output*>
+     **/
+    QList<Output*> getOutputList(int screen);
+    
 private:
     bool valid;
     int ver_major, ver_minor;
