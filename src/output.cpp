@@ -132,8 +132,11 @@ QMap<RRMode,QString> EasyRandR::Output::validModes(void )
 	for (int i=0; i<list.count(); i++) {
 	    QString Modename;
 	    for (int j=0; j<mlist.count(); j++)
-		if (list[i] == mlist[j].id)
-		    Modename = QString::fromUtf8(mlist[i].name) + "@" + mlist[i].dotClock;
+		if (list[i] == mlist[j].id) {
+		    // Calculate Refresh Rate
+		    float rr = (float) mlist[i].dotClock / (mlist[i].hTotal*mlist[i].vTotal);
+		    Modename = QString::fromUtf8(mlist[i].name) + "@" + QString::number(rr,'f',1);
+		}
 	    map.insert(list[i],Modename);
 	}
     }
