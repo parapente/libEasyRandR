@@ -64,6 +64,13 @@ public:
      **/
     QList<Output*> getOutputList(int screen);
     
+    /**
+     * @brief Get the number of virtual framebuffers available
+     *
+     * @return int
+     **/
+    int getScreenCount(void);
+    
 private:
     bool valid;
     int ver_major, ver_minor;

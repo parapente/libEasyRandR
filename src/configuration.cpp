@@ -75,3 +75,8 @@ QList< EasyRandR::Output* > EasyRandR::Configuration::getOutputList(int screen)
     else
 	return QList<EasyRandR::Output*>();
 }
+
+int EasyRandR::Configuration::getScreenCount(void )
+{
+    return ScreenCount(display);
+}
