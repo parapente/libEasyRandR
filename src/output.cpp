@@ -133,7 +133,7 @@ QMap<RRMode,QString> EasyRandR::Output::validModes(void )
 	    QString Modename;
 	    for (int j=0; j<mlist.count(); j++)
 		if (list[i] == mlist[j].id)
-		    Modename = QString::fromUtf8(mlist[i].name);
+		    Modename = QString::fromUtf8(mlist[i].name) + "@" + mlist[i].dotClock;
 	    map.insert(list[i],Modename);
 	}
     }
