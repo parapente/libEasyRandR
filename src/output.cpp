@@ -27,6 +27,7 @@ EasyRandR::Output::Output(Display* dpy, Window w, int oid, Screen *scr): display
 									    screen(scr)
 {
     info = NULL;
+    pcrtc = NULL;
     positionChanged = modeChanged =  rotationChanged = outputsChanged = false;
     newmode = newrotation = newx = newy = 0;
     updateInfo();
