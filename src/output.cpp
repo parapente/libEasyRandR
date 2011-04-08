@@ -281,19 +281,23 @@ bool EasyRandR::Output::setOutputs ( QList< RROutput > outputs )
 
 int EasyRandR::Output::applySettings(void )
 {
-    if (!positionChanged) {
-	newx = pcrtc->x();
-	newy = pcrtc->y();
+    if (pcrtc) {
+	if (!positionChanged) {
+	    newx = pcrtc->x();
+	    newy = pcrtc->y();
+	}
+	
+	if (!modeChanged)
+	    newmode = pcrtc->mode();
+	
+	if (!rotationChanged)
+	    newrotation = pcrtc->rotation();
+	
+	if (!outputsChanged)
+	    newoutputs = pcrtc->connectedTo();
+	
+	return pcrtc->setCrtcConfig(newx,newy,newmode,newrotation,newoutputs);
     }
-    
-    if (!modeChanged)
-	newmode = pcrtc->mode();
-    
-    if (!rotationChanged)
-	newrotation = pcrtc->rotation();
-    
-    if (!outputsChanged)
-	newoutputs = pcrtc->connectedTo();
-    
-    return pcrtc->setCrtcConfig(newx,newy,newmode,newrotation,newoutputs);
+    else
+	return -1; // TODO: Find a more appropriate return value
 }
