@@ -67,7 +67,7 @@ public:
     /**
      * @brief Get the list of available Crtcs
      *
-     * The list contains the output ids of all available crtcs
+     * The list contains the crtc ids of all available crtcs
      * 
      * @return QList< RRCrtc >
      **/
