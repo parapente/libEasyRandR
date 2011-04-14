@@ -79,3 +79,13 @@ int EasyRandR::Configuration::getScreenCount(void )
 {
     return ScreenCount(display);
 }
+
+QMap< int, EasyRandR::Screen* > EasyRandR::Configuration::getScreens(void )
+{
+    return screens;
+}
+
+QList< EasyRandR::Screen* > EasyRandR::Configuration::getScreenList(void )
+{
+    return screens.values();
+}

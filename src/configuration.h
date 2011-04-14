@@ -71,6 +71,20 @@ public:
      **/
     int getScreenCount(void);
     
+    /**
+     * @brief Get a mapping of the screens
+     * 
+     * @return QMap<int,Screen*>
+     **/
+    QMap<int,Screen*> getScreens(void);
+    
+    /**
+     * @brief Get a simple list of all available screens
+     * 
+     * @return QList<Screen*>
+     **/
+    QList<Screen*> getScreenList(void);
+    
 private:
     bool valid;
     int ver_major, ver_minor;
