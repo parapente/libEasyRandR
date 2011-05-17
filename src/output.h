@@ -40,7 +40,7 @@ class Output : public QObject
     Q_OBJECT
     
 public:
-    explicit Output(Display* dpy, Window w, int oid, EasyRandR::Screen* scrres);
+    explicit Output(Display* dpy, Window w, RROutput oid, EasyRandR::Screen* scr);
     virtual ~Output();
     
     /**
@@ -248,10 +248,17 @@ public:
     bool setOutputs(QList<RROutput> outputs);
     int applySettings(void);
     
+    /**
+     * @brief Returns the randr id of the output.
+     * 
+     * @return RROutput
+     **/
+    RROutput id(void);
+    
 private:
     Display* display;
     Window window;
-    int id;
+    RROutput outputId;
     Screen *screen;
     bool valid;
     XRROutputInfo *info;

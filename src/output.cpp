@@ -21,9 +21,9 @@
 #include "output.h"
 #include <QPoint>
 
-EasyRandR::Output::Output(Display* dpy, Window w, int oid, Screen *scr): display(dpy),
+EasyRandR::Output::Output(Display* dpy, Window w, RROutput oid, Screen *scr): display(dpy),
 									    window(w),
-									    id(oid),
+									    outputId(oid),
 									    screen(scr)
 {
     info = NULL;
@@ -46,7 +46,7 @@ void EasyRandR::Output::updateInfo(void)
 {
     if (info)
 	XRRFreeOutputInfo(info);
-    info = XRRGetOutputInfo(display,screen->getResources(),id);
+    info = XRRGetOutputInfo(display,screen->getResources(),outputId);
     if (info)
 	valid = true;
     else {
@@ -300,4 +300,9 @@ int EasyRandR::Output::applySettings(void )
     }
     else
 	return -1; // TODO: Find a more appropriate return value
+}
+
+RROutput EasyRandR::Output::id(void )
+{
+    return outputId;
 }
