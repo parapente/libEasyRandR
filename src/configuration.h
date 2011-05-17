@@ -86,6 +86,8 @@ public:
      **/
     QList<Screen*> getScreenList(void);
     
+    int applyConfiguration(void);
+    
 private:
     bool valid;
     int ver_major, ver_minor;
@@ -96,6 +98,7 @@ private:
 
     QVector<QList<EasyRandR::Output*> > outputs;
     QMap<int,Screen*> screens;
+    void updateScreenSize(int screen, QList< EasyRandR::Output* > outputList);
 };
 
 }

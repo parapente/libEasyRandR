@@ -19,6 +19,7 @@
 
 #include "configuration.h"
 #include <X11/Xlib.h>
+#include <QRect>
 
 EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
 {
@@ -96,4 +97,30 @@ QMap< int, EasyRandR::Screen* > EasyRandR::Configuration::getScreens(void )
 QList< EasyRandR::Screen* > EasyRandR::Configuration::getScreenList(void )
 {
     return screens.values();
+}
+
+int EasyRandR::Configuration::applyConfiguration(void )
+{
+    for (int i=0; i<outputs.count(); i++) {
+	updateScreenSize(i, outputs[i]);
+	for (int j=0; j<outputs[i].count(); j++)
+	    outputs[i].at(j)->applySettings();
+    }
+}
+
+void EasyRandR::Configuration::updateScreenSize(int screen, QList< EasyRandR::Output* > outputList)
+{
+    // TODO: Check for panning
+    QRect screenRect;
+    
+    for (int i=0; i<outputList.count(); i++) {
+	// We must take all rects of all outputs of screen i to check how much
+	// space is needed for screen
+	QRect r(outputList.at(i)->x(), outputList.at(i)->y(), outputList.at(i)->width(), outputList.at(i)->height());
+	screenRect = screenRect.united(r);
+    }
+    
+    // TODO: Look here also when checking for panning
+    if (screens.value(screen)->getSize() != screenRect.size())
+	screens.value(screen)->setSize(screenRect.size());
 }
