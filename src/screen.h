@@ -65,6 +65,13 @@ public:
     QList<RROutput> getOutputs(void);
     
     /**
+     * @brief Get number of available outputs
+     *
+     * @return int
+     **/
+    int getOutputCount(void);
+    
+    /**
      * @brief Get the list of available Crtcs
      *
      * The list contains the crtc ids of all available crtcs

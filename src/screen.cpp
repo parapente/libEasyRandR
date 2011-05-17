@@ -62,6 +62,14 @@ QList< RROutput > EasyRandR::Screen::getOutputs(void)
     return outs;
 }
 
+int EasyRandR::Screen::getOutputCount(void )
+{
+    if (resources)
+	return resources->noutput;
+    else
+	return 0;
+}
+
 XRRScreenResources* EasyRandR::Screen::getResources(void )
 {
     return resources;
