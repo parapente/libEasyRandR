@@ -38,9 +38,17 @@ EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
 	
 	count = ScreenCount(display);
 	for (int i=0; i<count; i++) {
+	    QList<EasyRandR::Output *> m;
+	    
 	    window << RootWindow(display,i);
 
 	    screens[i] = new EasyRandR::Screen(display,RootWindow(display,i),i);
+	    
+	    QList<RROutput> list = screens.value(i)->getOutputs();
+	    for (int j=0; j<list.count(); j++)
+		m.append(new EasyRandR::Output(display,window[i],list.at(j),screens.value(i)));
+	    
+	    outputs.append(m);
 	}
     }
 }
@@ -57,7 +65,7 @@ QMap<RROutput,EasyRandR::Output*> EasyRandR::Configuration::getOutputs(int scree
     if (screens.value(screen)) {
 	QList<RROutput> list = screens.value(screen)->getOutputs();
 	for (int i=0; i<list.count(); i++)
-	    m[list.at(i)] = new EasyRandR::Output(display,window[screen],list.at(i),screens.value(screen));
+	    m[list.at(i)] = outputs[screen].at(i);
     }
 
     return m;
@@ -69,7 +77,7 @@ QList< EasyRandR::Output* > EasyRandR::Configuration::getOutputList(int screen)
     if (screens.value(screen)) {
 	QList<RROutput> list = screens.value(screen)->getOutputs();
 	for (int i=0; i<list.count(); i++)
-	    l << new EasyRandR::Output(display,window[screen],list.at(i),screens.value(screen));
+	    l << outputs[screen].at(i);
     }
 
     return l;

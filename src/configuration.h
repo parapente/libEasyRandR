@@ -22,6 +22,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QVector>
 #include <X11/extensions/randrproto.h>
 #include <X11/extensions/Xrandr.h>
 #include <X11/Xproto.h>
@@ -93,7 +94,7 @@ private:
     Display *display;
     QList<Window> window;
 
-    QMap<RROutput,Output*> outputs;
+    QVector<QList<EasyRandR::Output*> > outputs;
     QMap<int,Screen*> screens;
 };
 
