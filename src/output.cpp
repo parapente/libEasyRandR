@@ -28,8 +28,8 @@ EasyRandR::Output::Output(Display* dpy, Window w, RROutput oid, Screen *scr): di
 {
     info = NULL;
     pcrtc = NULL;
-    positionChanged = modeChanged =  rotationChanged = outputsChanged = false;
-    newmode = newrotation = newx = newy = 0;
+    m_positionChanged = m_modeChanged =  m_rotationChanged = m_outputsChanged = false;
+    m_newmode = m_newrotation = m_newx = m_newy = 0;
     updateInfo();
     if (info && screen->isResValid() && (info->crtc!=0)) {
 	pcrtc = new Crtc(display,screen,info->crtc);
@@ -237,16 +237,16 @@ Rotation EasyRandR::Output::validRotations(void )
 
 void EasyRandR::Output::setPos ( uint x, uint y )
 {
-    newx = x;
-    newy = y;
-    positionChanged = true;
+    m_newx = x;
+    m_newy = y;
+    m_positionChanged = true;
 }
 
 bool EasyRandR::Output::setMode ( RRMode mode )
 {
     if (validModes().contains(mode)) {
-	newmode = mode;
-	modeChanged = true;
+	m_newmode = mode;
+	m_modeChanged = true;
 	return true;
     }
     else
@@ -256,8 +256,8 @@ bool EasyRandR::Output::setMode ( RRMode mode )
 bool EasyRandR::Output::setRotation ( Rotation rotation )
 {
     if ((rotation & validRotations()) == rotation) {
-	newrotation = rotation;
-	rotationChanged = true;
+	m_newrotation = rotation;
+	m_rotationChanged = true;
 	return true;
     }
     else
@@ -272,8 +272,8 @@ bool EasyRandR::Output::setOutputs ( QList< RROutput > outputs )
 	    ret = false;
 
     if (ret) {
-	newoutputs = outputs;
-	outputsChanged = true;
+	m_newoutputs = outputs;
+	m_outputsChanged = true;
     }
     
     return ret;
@@ -282,21 +282,21 @@ bool EasyRandR::Output::setOutputs ( QList< RROutput > outputs )
 int EasyRandR::Output::applySettings(void )
 {
     if (pcrtc) {
-	if (!positionChanged) {
-	    newx = pcrtc->x();
-	    newy = pcrtc->y();
+	if (!m_positionChanged) {
+	    m_newx = pcrtc->x();
+	    m_newy = pcrtc->y();
 	}
 	
-	if (!modeChanged)
-	    newmode = pcrtc->mode();
+	if (!m_modeChanged)
+	    m_newmode = pcrtc->mode();
 	
-	if (!rotationChanged)
-	    newrotation = pcrtc->rotation();
+	if (!m_rotationChanged)
+	    m_newrotation = pcrtc->rotation();
 	
-	if (!outputsChanged)
-	    newoutputs = pcrtc->connectedTo();
+	if (!m_outputsChanged)
+	    m_newoutputs = pcrtc->connectedTo();
 	
-	return pcrtc->setCrtcConfig(newx,newy,newmode,newrotation,newoutputs);
+	return pcrtc->setCrtcConfig(m_newx, m_newy, m_newmode, m_newrotation, m_newoutputs);
     }
     else
 	return -1; // TODO: Find a more appropriate return value
@@ -305,4 +305,48 @@ int EasyRandR::Output::applySettings(void )
 RROutput EasyRandR::Output::id(void )
 {
     return outputId;
+}
+
+RRMode EasyRandR::Output::newMode(void )
+{
+    if (m_modeChanged)
+	return m_newmode;
+    else
+	return pcrtc->mode();
+}
+
+int EasyRandR::Output::newx(void )
+{
+    if (m_positionChanged)
+	return m_newx;
+    else
+	return pcrtc->x();
+}
+
+int EasyRandR::Output::newy(void )
+{
+    if (m_positionChanged)
+	return m_newy;
+    else
+	return pcrtc->y();
+}
+
+bool EasyRandR::Output::modeChanged(void )
+{
+    return m_modeChanged;
+}
+
+bool EasyRandR::Output::outputsChanged(void )
+{
+    return m_outputsChanged;
+}
+
+bool EasyRandR::Output::positionChanged(void )
+{
+    return m_positionChanged;
+}
+
+bool EasyRandR::Output::rotationChanged(void )
+{
+    return m_rotationChanged;
 }

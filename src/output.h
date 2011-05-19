@@ -180,10 +180,19 @@ public:
     /**
      * @brief The x position of the output in the virtual framebuffer called screen
      *
-     * @param  ...
      * @return int
      **/
     int x(void);
+    
+    /**
+     * @brief The new x position of the output in the virtual framebuffer called screen
+     *
+     * This setting has not been applied to the output yet. If there was no change,
+     * the current x is returned.
+     * 
+     * @return int
+     **/
+    int newx(void);
     
     /**
      * @brief The y position of the output in the virtual framebuffer called screen
@@ -193,11 +202,31 @@ public:
     int y(void);
     
     /**
+     * @brief The new y position of the output in the virtual framebuffer called screen
+     *
+     * This setting has not been applied to the output yet. If there was no change,
+     * the current y is returned.
+     * 
+     * @return int
+     **/
+    int newy(void);
+    
+    /**
      * @brief Get the id of the current mode used by the output
      *
      * @return RRMode
      **/
     RRMode currentMode(void);
+    
+    /**
+     * @brief Get the id of the new mode that will be used by the output.
+     * 
+     * This setting has not been applied to the output yet. If no mode change happened,
+     * the current mode is returned.
+     *
+     * @return RRMode
+     **/
+    RRMode newMode(void);
     
     /**
      * @brief Set the new position of the output in screen space.
@@ -255,6 +284,11 @@ public:
      **/
     RROutput id(void);
     
+    bool positionChanged(void);
+    bool modeChanged(void);
+    bool rotationChanged(void);
+    bool outputsChanged(void);
+    
 private:
     Display* display;
     Window window;
@@ -264,14 +298,14 @@ private:
     XRROutputInfo *info;
     Crtc *pcrtc;
     
-    bool positionChanged;
-    bool modeChanged;
-    bool rotationChanged;
-    bool outputsChanged;
-    uint newx, newy;
-    RRMode newmode;
-    Rotation newrotation;
-    QList<RROutput> newoutputs;
+    bool m_positionChanged;
+    bool m_modeChanged;
+    bool m_rotationChanged;
+    bool m_outputsChanged;
+    uint m_newx, m_newy;
+    RRMode m_newmode;
+    Rotation m_newrotation;
+    QList<RROutput> m_newoutputs;
 };
 
 }
