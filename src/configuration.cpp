@@ -114,9 +114,30 @@ void EasyRandR::Configuration::updateScreenSize(int screen, QList< EasyRandR::Ou
     QRect screenRect;
     
     for (int i=0; i<outputList.count(); i++) {
-	// We must take all rects of all outputs of screen i to check how much
-	// space is needed for screen
-	QRect r(outputList.at(i)->x(), outputList.at(i)->y(), outputList.at(i)->width(), outputList.at(i)->height());
+	// We must take all rects of all outputs of screen[i] to check how much
+	// space is needed for the screen
+	CARD16 modewidth, modeheight;
+	
+	if (outputList.at(i)->modeChanged()) {
+	    RRMode newmode = outputList.at(i)->newMode();
+	    
+	    // We need to find the width and height of this mode
+	    QList<XRRModeInfo> modeList;
+	    
+	    modeList = screens.value(screen)->getModes();
+	    for (int j=0; j<modeList.count(); j++) {
+		if (modeList.at(i).id == newmode) {
+		    modewidth = modeList.at(i).width;
+		    modeheight = modeList.at(i).height;
+		}
+	    }
+	}
+	else {
+	    modewidth = outputList.at(i)->width();
+	    modeheight = outputList.at(i)->height();
+	}
+	
+	QRect r(outputList.at(i)->x(), outputList.at(i)->y(), modewidth, modeheight);
 	screenRect = screenRect.united(r);
     }
     
