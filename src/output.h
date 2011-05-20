@@ -40,7 +40,7 @@ class Output : public QObject
     Q_OBJECT
     
 public:
-    explicit Output(Display* dpy, Window w, RROutput oid, EasyRandR::Screen* scr);
+    explicit Output(Window w, RROutput oid, EasyRandR::Screen* scr);
     virtual ~Output();
     
     /**
@@ -288,9 +288,10 @@ public:
     bool modeChanged(void);
     bool rotationChanged(void);
     bool outputsChanged(void);
+    void off(void);
+    void on(void);
     
 private:
-    Display* display;
     Window window;
     RROutput outputId;
     Screen *screen;

@@ -93,7 +93,6 @@ private:
     int ver_major, ver_minor;
     int eventBase, errorBase;
 
-    Display *display;
     QList<Window> window;
 
     QVector<QList<EasyRandR::Output*> > outputs;

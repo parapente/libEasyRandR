@@ -18,13 +18,11 @@
 
 
 #include <QDebug>
-#include "output.h"
 #include <QPoint>
+#include <QX11Info>
+#include "output.h"
 
-EasyRandR::Output::Output(Display* dpy, Window w, RROutput oid, Screen *scr): display(dpy),
-									    window(w),
-									    outputId(oid),
-									    screen(scr)
+EasyRandR::Output::Output(Window w, RROutput oid, Screen *scr): window(w), outputId(oid), screen(scr)
 {
     info = NULL;
     pcrtc = NULL;
@@ -32,7 +30,7 @@ EasyRandR::Output::Output(Display* dpy, Window w, RROutput oid, Screen *scr): di
     m_newmode = m_newrotation = m_newx = m_newy = 0;
     updateInfo();
     if (info && screen->isResValid() && (info->crtc!=0)) {
-	pcrtc = new Crtc(display,screen,info->crtc);
+	pcrtc = new Crtc(screen,info->crtc);
     }
 }
 
@@ -46,7 +44,7 @@ void EasyRandR::Output::updateInfo(void)
 {
     if (info)
 	XRRFreeOutputInfo(info);
-    info = XRRGetOutputInfo(display,screen->getResources(),outputId);
+    info = XRRGetOutputInfo(QX11Info::display(),screen->getResources(),outputId);
     if (info)
 	valid = true;
     else {
@@ -349,4 +347,36 @@ bool EasyRandR::Output::positionChanged(void )
 bool EasyRandR::Output::rotationChanged(void )
 {
     return m_rotationChanged;
+}
+
+void EasyRandR::Output::off(void )
+{
+    if (pcrtc) {
+	// Keep current settings as new to be able to recover
+	if (!m_modeChanged) {
+	    m_newmode = pcrtc->mode();
+	    m_modeChanged = true;
+	}
+	if (!m_outputsChanged) {
+	    m_newoutputs = pcrtc->connectedTo();
+	    m_outputsChanged = true;
+	}
+	if (!m_positionChanged) {
+	    m_newx = pcrtc->x();
+	    m_newy = pcrtc->y();
+	    m_positionChanged = true;
+	}
+	if (!m_rotationChanged) {
+	    m_newrotation = pcrtc->rotation();
+	    m_rotationChanged = true;
+	}
+	
+	pcrtc->setCrtcConfig(pcrtc->x(), pcrtc->y(), None, pcrtc->rotation(), pcrtc->connectedTo());
+    }
+}
+
+void EasyRandR::Output::on(void )
+{
+    // Settings are already saved as new so we just need to apply them
+    applySettings();
 }

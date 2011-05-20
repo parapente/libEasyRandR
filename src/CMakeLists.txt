@@ -1,4 +1,6 @@
 set(QT_USE_QTCORE TRUE)
+set(QT_USE_QTGUI TRUE)
+
 include(${QT_USE_FILE})
 
 configure_file (easycfg.h.cmake

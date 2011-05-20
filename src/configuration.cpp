@@ -16,15 +16,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-#include "configuration.h"
-#include <X11/Xlib.h>
+#include <QDebug>
 #include <QRect>
+#include <QX11Info>
+#include <X11/Xlib.h>
+#include "configuration.h"
 
 EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
 {
     valid = false;
-    display = XOpenDisplay(NULL);
+    Display *display = QX11Info::display();
     
     // If we can open a connection to the X server
     if (display) {
@@ -43,11 +44,11 @@ EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
 	    
 	    window << RootWindow(display,i);
 
-	    screens[i] = new EasyRandR::Screen(display,RootWindow(display,i),i);
+	    screens[i] = new EasyRandR::Screen(RootWindow(display,i),i);
 	    
 	    QList<RROutput> list = screens.value(i)->getOutputs();
 	    for (int j=0; j<list.count(); j++)
-		m.append(new EasyRandR::Output(display,window[i],list.at(j),screens.value(i)));
+		m.append(new EasyRandR::Output(window[i], list.at(j), screens.value(i)));
 	    
 	    outputs.append(m);
 	}
@@ -56,7 +57,6 @@ EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
 
 EasyRandR::Configuration::~Configuration()
 {
-    XCloseDisplay(display);
 }
 
 QMap<RROutput,EasyRandR::Output*> EasyRandR::Configuration::getOutputs(int screen)
@@ -86,7 +86,7 @@ QList< EasyRandR::Output* > EasyRandR::Configuration::getOutputList(int screen)
 
 int EasyRandR::Configuration::getScreenCount(void )
 {
-    return ScreenCount(display);
+    return ScreenCount(QX11Info::display());
 }
 
 QMap< int, EasyRandR::Screen* > EasyRandR::Configuration::getScreens(void )
@@ -101,10 +101,13 @@ QList< EasyRandR::Screen* > EasyRandR::Configuration::getScreenList(void )
 
 int EasyRandR::Configuration::applyConfiguration(void )
 {
-    for (int i=0; i<outputs.count(); i++) {
+    for (int i=0; i<outputs.count(); i++) { // Screens
+	for (int j=0; j<outputs[i].count(); j++) // Outputs
+	    outputs[i].at(j)->off();
 	updateScreenSize(i, outputs[i]);
-	for (int j=0; j<outputs[i].count(); j++)
+	for (int j=0; j<outputs[i].count(); j++) {// Outputs
 	    outputs[i].at(j)->applySettings();
+	}
     }
 }
 
@@ -126,9 +129,11 @@ void EasyRandR::Configuration::updateScreenSize(int screen, QList< EasyRandR::Ou
 	    
 	    modeList = screens.value(screen)->getModes();
 	    for (int j=0; j<modeList.count(); j++) {
-		if (modeList.at(i).id == newmode) {
-		    modewidth = modeList.at(i).width;
-		    modeheight = modeList.at(i).height;
+		qDebug() << "Compare" << modeList.at(j).id << "with" << newmode;
+		if (modeList.at(j).id == newmode) {
+		    qDebug() << "Success!";
+		    modewidth = modeList.at(j).width;
+		    modeheight = modeList.at(j).height;
 		}
 	    }
 	}
@@ -136,12 +141,20 @@ void EasyRandR::Configuration::updateScreenSize(int screen, QList< EasyRandR::Ou
 	    modewidth = outputList.at(i)->width();
 	    modeheight = outputList.at(i)->height();
 	}
-	
+
+	qDebug() << (int) modewidth << 'x' << (int) modeheight;
 	QRect r(outputList.at(i)->x(), outputList.at(i)->y(), modewidth, modeheight);
 	screenRect = screenRect.united(r);
+	qDebug() << "ScreenRect size" << screenRect.width() << 'x' << screenRect.height();
     }
     
     // TODO: Look here also when checking for panning
-    if (screens.value(screen)->getSize() != screenRect.size())
-	screens.value(screen)->setSize(screenRect.size());
+    qDebug() << "Current Screen -->" << screens.value(screen)->getSize().width() << 'x' << screens.value(screen)->getSize().height();
+    if (screens.value(screen)->getSize() != screenRect.size()) {
+	qDebug() << "Changing screen size:";
+	if (screens.value(screen)->setSize(screenRect.size()))
+	    qDebug() << "Success!";
+	else
+	    qDebug() << "Failed!";
+    }
 }

@@ -38,7 +38,7 @@ class Screen: public QObject
     Q_OBJECT
     
 public:
-    explicit Screen( Display* dpy, Window w, int scid);
+    explicit Screen( Window w, int scid);
     virtual ~Screen();
     
     /**
@@ -142,15 +142,14 @@ public:
     QSize getSize(void);
 
 private:
-    int id;
-    Display *display;
-    Window window;
-    bool infoValid;
-    bool resValid;
+    int m_id;
+    Window m_window;
+    bool m_infoValid;
+    bool m_resValid;
     
-    XRRScreenResources *resources;
-    XRRScreenConfiguration *info;
-    int minWidth, minHeight, maxWidth, maxHeight;
+    XRRScreenResources *m_resources;
+    XRRScreenConfiguration *m_info;
+    int m_minWidth, m_minHeight, m_maxWidth, m_maxHeight;
 };
 
 }

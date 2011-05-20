@@ -31,7 +31,7 @@ class Crtc : public QObject
     Q_OBJECT
     
 public:
-    explicit Crtc(Display *dpy, EasyRandR::Screen *scr, RRCrtc crtc);
+    explicit Crtc(EasyRandR::Screen *scr, RRCrtc crtc);
     virtual ~Crtc();
     
     /**
@@ -137,11 +137,10 @@ public:
     QList<RROutput> possibleOutputs(void);
     
 private:
-    Display *display;
-    EasyRandR::Screen *screen;
-    RRCrtc id;
-    XRRCrtcInfo *info;
-    bool valid;
+    EasyRandR::Screen *m_screen;
+    RRCrtc m_id;
+    XRRCrtcInfo *m_info;
+    bool m_valid;
 };
 
 }

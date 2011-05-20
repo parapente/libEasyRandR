@@ -17,34 +17,36 @@
 */
 
 #include <QTextStream>
+#include <QX11Info>
+#include <QDebug>
 #include "screen.h"
 #include "easycfg.h"
 
-EasyRandR::Screen::Screen(Display* dpy, Window w, int scid): display(dpy), window(w), id(scid)
+EasyRandR::Screen::Screen(Window w, int scid): m_window(w), m_id(scid)
 {
-    resources = NULL;
+    m_resources = NULL;
     updateResources();
     
-    info = NULL;
+    m_info = NULL;
     updateInfo();
     QTextStream err(stderr);
     
-    if (XRRGetScreenSizeRange(display, window, &minWidth, &minHeight, &maxWidth, &maxHeight) != 1)
+    if (XRRGetScreenSizeRange(QX11Info::display(), m_window, &m_minWidth, &m_minHeight, &m_maxWidth, &m_maxHeight) != 1)
 	err << "Error while getting the size of screen!\n";
 }
 
 EasyRandR::Screen::~Screen()
 {
-    if (resources)
-	XRRFreeScreenResources(resources);
-    if (info)
-	XRRFreeScreenConfigInfo(info);
+    if (m_resources)
+	XRRFreeScreenResources(m_resources);
+    if (m_info)
+	XRRFreeScreenConfigInfo(m_info);
 }
 
 Time EasyRandR::Screen::configTimestamp(void)
 {
-    if (resources)
-	return resources->configTimestamp;
+    if (m_resources)
+	return m_resources->configTimestamp;
     else
 	return 0;
 }
@@ -54,9 +56,9 @@ QList< RROutput > EasyRandR::Screen::getOutputs(void)
 {
     QList<RROutput> outs;
     
-    if (resources)
-	for (int i=0; i<resources->noutput; i++) {
-	    outs.append(resources->outputs[i]);
+    if (m_resources)
+	for (int i=0; i<m_resources->noutput; i++) {
+	    outs.append(m_resources->outputs[i]);
 	}
     
     return outs;
@@ -64,57 +66,57 @@ QList< RROutput > EasyRandR::Screen::getOutputs(void)
 
 int EasyRandR::Screen::getOutputCount(void )
 {
-    if (resources)
-	return resources->noutput;
+    if (m_resources)
+	return m_resources->noutput;
     else
 	return 0;
 }
 
 XRRScreenResources* EasyRandR::Screen::getResources(void )
 {
-    return resources;
+    return m_resources;
 }
 
 bool EasyRandR::Screen::isInfoValid(void )
 {
-    return infoValid;
+    return m_infoValid;
 }
 
 void EasyRandR::Screen::updateInfo(void )
 {
-    if (info)
-	XRRFreeScreenConfigInfo(info);
-    info = XRRGetScreenInfo(display,window);
-    if (info)
-	infoValid = true;
+    if (m_info)
+	XRRFreeScreenConfigInfo(m_info);
+    m_info = XRRGetScreenInfo(QX11Info::display(),m_window);
+    if (m_info)
+	m_infoValid = true;
     else
-	infoValid = false;
+	m_infoValid = false;
 }
 
 bool EasyRandR::Screen::isResValid(void )
 {
-    return resValid;
+    return m_resValid;
 }
 
 void EasyRandR::Screen::updateResources(void )
 {
-    if (resources)
-	XRRFreeScreenResources(resources);
+    if (m_resources)
+	XRRFreeScreenResources(m_resources);
 #ifdef XRANDR_1_3_FOUND
-    resources = XRRGetScreenResourcesCurrent(display,window);
+    m_resources = XRRGetScreenResourcesCurrent(QX11Info::display(),m_window);
 #else
-    resources = XRRGetScreenResources(display,window);
+    resources = XRRGetScreenResources(QX11Info::display(),window);
 #endif
-    if (resources)
-	resValid = true;
+    if (m_resources)
+	m_resValid = true;
     else
-	resValid = false;
+	m_resValid = false;
 }
 
 Time EasyRandR::Screen::timestamp(void )
 {
-    if (resources)
-	return resources->timestamp;
+    if (m_resources)
+	return m_resources->timestamp;
     else
 	return 0;
 }
@@ -123,9 +125,9 @@ QList< RRCrtc > EasyRandR::Screen::getCrtcs(void )
 {
     QList<RRCrtc> list;
     
-    if (resources)
-	for (int i=0; i<resources->ncrtc; i++)
-	    list << resources->crtcs[i];
+    if (m_resources)
+	for (int i=0; i<m_resources->ncrtc; i++)
+	    list << m_resources->crtcs[i];
 
     return list;
 }
@@ -134,24 +136,25 @@ QList< XRRModeInfo > EasyRandR::Screen::getModes(void )
 {
     QList<XRRModeInfo> list;
     
-    if (resources)
-	for (int i=0; i<resources->nmode; i++)
-	    list << resources->modes[i];
+    if (m_resources)
+	for (int i=0; i<m_resources->nmode; i++)
+	    list << m_resources->modes[i];
 
     return list;
 }
 
 bool EasyRandR::Screen::setSize(QSize s)
 {
-    if ((s.width() < minWidth) || (s.width() > maxWidth) ||
-	(s.height() < minHeight) || (s.height() > maxHeight))
+    if ((s.width() < m_minWidth) || (s.width() > m_maxWidth) ||
+	(s.height() < m_minHeight) || (s.height() > m_maxHeight))
 	return false;
     else {
-	Time tmp = resources->configTimestamp;
-	XRRSetScreenSize(display,window,s.width(),s.height(),(int)((float)s.width())/96*25.4,(int)((float)s.height())/96*25.4);
-	updateInfo();
+	Time tmp = m_resources->configTimestamp;
+	XRRSetScreenSize(QX11Info::display(),m_window,s.width(),s.height(),(int)((float)s.width())/96*25.4,(int)((float)s.height())/96*25.4);
 	updateResources();
-	if (resources->configTimestamp == tmp) // If no change took place
+	updateInfo();
+	qDebug() << "::setSize::" << s.width() << 'x' << s.height();
+	if (m_resources->configTimestamp == tmp) // If no change took place
 	    return false;
 	else
 	    return true;
@@ -162,8 +165,8 @@ QSize EasyRandR::Screen::getSize ( void )
 {
     QSize s;
     
-    s.setWidth(DisplayWidth(display,id));
-    s.setHeight(DisplayHeight(display,id));
+    s.setWidth(XDisplayWidth(QX11Info::display(),m_id));
+    s.setHeight(XDisplayHeight(QX11Info::display(),m_id));
     
     return s;
 }
