@@ -17,7 +17,6 @@
 */
 
 #include <QTextStream>
-#include <QX11Info>
 #include <QDebug>
 #include "screen.h"
 #include "easycfg.h"
@@ -31,8 +30,11 @@ EasyRandR::Screen::Screen(Window w, int scid): m_window(w), m_id(scid)
     updateInfo();
     QTextStream err(stderr);
     
-    if (XRRGetScreenSizeRange(QX11Info::display(), m_window, &m_minWidth, &m_minHeight, &m_maxWidth, &m_maxHeight) != 1)
+    Display *dpy = XOpenDisplay(NULL);
+    
+    if ((dpy) && (XRRGetScreenSizeRange(dpy, m_window, &m_minWidth, &m_minHeight, &m_maxWidth, &m_maxHeight) != 1))
 	err << "Error while getting the size of screen!\n";
+    XCloseDisplay(dpy);
 }
 
 EasyRandR::Screen::~Screen()
@@ -86,7 +88,15 @@ void EasyRandR::Screen::updateInfo(void )
 {
     if (m_info)
 	XRRFreeScreenConfigInfo(m_info);
-    m_info = XRRGetScreenInfo(QX11Info::display(),m_window);
+    Display *dpy = XOpenDisplay(NULL);
+    
+    if (dpy) {
+	m_info = XRRGetScreenInfo(dpy,m_window);
+	XCloseDisplay(dpy);
+    }
+    else
+	m_info = NULL;
+    
     if (m_info)
 	m_infoValid = true;
     else
@@ -102,11 +112,18 @@ void EasyRandR::Screen::updateResources(void )
 {
     if (m_resources)
 	XRRFreeScreenResources(m_resources);
+    Display *dpy = XOpenDisplay(NULL);
+    if (dpy) {
 #ifdef XRANDR_1_3_FOUND
-    m_resources = XRRGetScreenResourcesCurrent(QX11Info::display(),m_window);
+	m_resources = XRRGetScreenResourcesCurrent(dpy,m_window);
 #else
-    resources = XRRGetScreenResources(QX11Info::display(),window);
+	resources = XRRGetScreenResources(dpy,window);
 #endif
+	XCloseDisplay(dpy);
+    }
+    else
+	m_resources = NULL;
+    
     if (m_resources)
 	m_resValid = true;
     else
@@ -150,23 +167,34 @@ bool EasyRandR::Screen::setSize(QSize s)
 	return false;
     else {
 	Time tmp = m_resources->configTimestamp;
-	XRRSetScreenSize(QX11Info::display(),m_window,s.width(),s.height(),(int)((float)s.width())/96*25.4,(int)((float)s.height())/96*25.4);
-	updateResources();
-	updateInfo();
-	qDebug() << "::setSize::" << s.width() << 'x' << s.height();
-	if (m_resources->configTimestamp == tmp) // If no change took place
-	    return false;
+	Display *dpy = XOpenDisplay(NULL);
+	if (dpy) {
+	    XRRSetScreenSize(dpy,m_window,s.width(),s.height(),(int)((float)s.width())/96*25.4,(int)((float)s.height())/96*25.4);
+	    XCloseDisplay(dpy);
+	    updateResources();
+	    updateInfo();
+	    qDebug() << "::setSize::" << s.width() << 'x' << s.height();
+	    if (m_resources->configTimestamp == tmp) // If no change took place
+		return false;
+	    else
+		return true;
+	}
 	else
-	    return true;
+	    return false;
     }
 }
 
 QSize EasyRandR::Screen::getSize ( void )
 {
     QSize s;
+    Display *dpy = XOpenDisplay(NULL);
     
-    s.setWidth(XDisplayWidth(QX11Info::display(),m_id));
-    s.setHeight(XDisplayHeight(QX11Info::display(),m_id));
-    
-    return s;
+    if (dpy) {
+	s.setWidth(XDisplayWidth(dpy,m_id));
+	s.setHeight(XDisplayHeight(dpy,m_id));
+	XCloseDisplay(dpy);
+	return s;
+    }
+    else
+	return QSize();
 }

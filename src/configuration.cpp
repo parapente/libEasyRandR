@@ -18,17 +18,18 @@
 
 #include <QDebug>
 #include <QRect>
-#include <QX11Info>
 #include <X11/Xlib.h>
 #include "configuration.h"
 
 EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
 {
     valid = false;
-    Display *display = QX11Info::display();
+    Display *display = XOpenDisplay(NULL);
     
     // If we can open a connection to the X server
     if (display) {
+	// Use the default error handler
+	XSetErrorHandler(NULL);
 	// Check if we can use the RandR Extension
 	valid = XRRQueryExtension(display, &eventBase, &errorBase);
     }
@@ -52,6 +53,7 @@ EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
 	    
 	    outputs.append(m);
 	}
+	XCloseDisplay(display);
     }
 }
 
@@ -86,7 +88,12 @@ QList< EasyRandR::Output* > EasyRandR::Configuration::getOutputList(int screen)
 
 int EasyRandR::Configuration::getScreenCount(void )
 {
-    return ScreenCount(QX11Info::display());
+    Display *dpy = XOpenDisplay(NULL);
+    
+    if (dpy)
+	return ScreenCount(dpy);
+    else
+	return 0;
 }
 
 QMap< int, EasyRandR::Screen* > EasyRandR::Configuration::getScreens(void )

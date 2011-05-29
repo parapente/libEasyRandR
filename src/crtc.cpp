@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QX11Info>
+#include <QDebug>
 #include "crtc.h"
 
 EasyRandR::Crtc::Crtc(EasyRandR::Screen* scr, RRCrtc crtc): m_screen(scr), m_id(crtc)
@@ -41,7 +41,15 @@ void EasyRandR::Crtc::updateInfo(void)
 {
     if (m_info)
 	XRRFreeCrtcInfo(m_info);
-    m_info = XRRGetCrtcInfo(QX11Info::display(), m_screen->getResources(), m_id);
+    Display *dpy = XOpenDisplay(NULL);
+    
+    if (dpy)
+	m_info = XRRGetCrtcInfo(dpy, m_screen->getResources(), m_id);
+    else
+	m_info = NULL;
+    
+    XCloseDisplay(dpy);
+    
     if (m_info)
 	m_valid = true;
     else
@@ -128,15 +136,23 @@ int EasyRandR::Crtc::setCrtcConfig(int x, int y, RRMode mode, Rotation rotation,
     int ret;
     
     RROutput *outs = new RROutput[4];
-    
+
+    qDebug() << "Setting crtc:" << x << y << mode << rotation << outputs;
     for (int i=0; i<outputs.count(); i++)
 	outs[i] = outputs.at(i);
     updateInfo();
-    if (mode == None) // If we want to disable Crtc...
-	ret = XRRSetCrtcConfig(QX11Info::display(),m_screen->getResources(),m_id,timestamp(),x,y,mode,rotation,NULL,0);
-    else
-	ret = XRRSetCrtcConfig(QX11Info::display(),m_screen->getResources(),m_id,timestamp(),x,y,mode,rotation,outs,outputs.count());
     
+    Display *dpy = XOpenDisplay(NULL);
+    if (dpy) {
+	if (mode == None) // If we want to disable Crtc...
+	    ret = XRRSetCrtcConfig(dpy,m_screen->getResources(),m_id,timestamp(),x,y,mode,rotation,NULL,0);
+	else
+	    ret = XRRSetCrtcConfig(dpy,m_screen->getResources(),m_id,timestamp(),x,y,mode,rotation,outs,outputs.count());
+    }
+    else
+	ret = -1; // TODO: Check validity of the return value
+    
+    XCloseDisplay(dpy);
     delete outs;
     return ret;
 }

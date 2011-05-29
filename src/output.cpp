@@ -19,7 +19,6 @@
 
 #include <QDebug>
 #include <QPoint>
-#include <QX11Info>
 #include "output.h"
 
 EasyRandR::Output::Output(Window w, RROutput oid, Screen *scr): window(w), outputId(oid), screen(scr)
@@ -44,7 +43,13 @@ void EasyRandR::Output::updateInfo(void)
 {
     if (info)
 	XRRFreeOutputInfo(info);
-    info = XRRGetOutputInfo(QX11Info::display(),screen->getResources(),outputId);
+    Display *dpy = XOpenDisplay(NULL);
+    
+    if (dpy)
+	info = XRRGetOutputInfo(dpy,screen->getResources(),outputId);
+    else
+	info = NULL;
+    
     if (info)
 	valid = true;
     else {
