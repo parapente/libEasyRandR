@@ -188,6 +188,26 @@ public:
     uint height(void);
     
     /**
+     * @brief The maximum value the x position can take depending on the resolution selected
+     *
+     * If you have set a new mode, it will use its resolution even though the new mode isn't
+     * applied yet.
+     * 
+     * @return uint
+     **/
+    uint maxX(void);
+
+    /**
+     * @brief The maximum value the y position can take depending on the resolution selected
+     * 
+     * If you have set a new mode, it will use its resolution even though the new mode isn't
+     * applied yet.
+     *
+     * @return uint
+     **/
+    uint maxY(void);
+    
+    /**
      * @brief The x position of the output in the virtual framebuffer called screen
      *
      * @return int
@@ -302,12 +322,12 @@ public:
     void on(void);
     
 private:
-    Window window;
-    RROutput outputId;
-    Screen *screen;
-    bool valid;
-    XRROutputInfo *info;
-    Crtc *pcrtc;
+    Window m_window;
+    RROutput m_outputId;
+    Screen *m_screen;
+    bool m_valid;
+    XRROutputInfo *m_info;
+    Crtc *m_pcrtc;
     
     bool m_positionChanged;
     bool m_modeChanged;

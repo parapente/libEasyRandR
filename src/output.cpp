@@ -21,60 +21,60 @@
 #include <QPoint>
 #include "output.h"
 
-EasyRandR::Output::Output(Window w, RROutput oid, Screen *scr): window(w), outputId(oid), screen(scr)
+EasyRandR::Output::Output(Window w, RROutput oid, Screen *scr): m_window(w), m_outputId(oid), m_screen(scr)
 {
-    info = NULL;
-    pcrtc = NULL;
+    m_info = NULL;
+    m_pcrtc = NULL;
     m_positionChanged = m_modeChanged =  m_rotationChanged = m_outputsChanged = false;
     m_newmode = m_newrotation = m_newx = m_newy = 0;
     updateInfo();
-    if (info && screen->isResValid() && (info->crtc!=0)) {
-	pcrtc = new Crtc(screen,info->crtc);
+    if (m_info && m_screen->isResValid() && (m_info->crtc!=0)) {
+	m_pcrtc = new Crtc(m_screen,m_info->crtc);
     }
 }
 
 EasyRandR::Output::~Output()
 {
-    if (info)
-	XRRFreeOutputInfo(info);
+    if (m_info)
+	XRRFreeOutputInfo(m_info);
 }
 
 void EasyRandR::Output::updateInfo(void)
 {
-    if (info)
-	XRRFreeOutputInfo(info);
+    if (m_info)
+	XRRFreeOutputInfo(m_info);
     Display *dpy = XOpenDisplay(NULL);
     
     if (dpy)
-	info = XRRGetOutputInfo(dpy,screen->getResources(),outputId);
+	m_info = XRRGetOutputInfo(dpy,m_screen->getResources(),m_outputId);
     else
-	info = NULL;
+	m_info = NULL;
     
-    if (info)
-	valid = true;
+    if (m_info)
+	m_valid = true;
     else {
 	qDebug() << "Can't get info!";
-	valid = false;
+	m_valid = false;
     }
 }
 
 bool EasyRandR::Output::isValid(void )
 {
-    return valid;
+    return m_valid;
 }
 
 RRCrtc EasyRandR::Output::crtc(void )
 {
-    if (info)
-	return info->crtc;
+    if (m_info)
+	return m_info->crtc;
     else
 	return 0;
 }
 
 Time EasyRandR::Output::timestamp(void )
 {
-    if (info)
-	return info->timestamp;
+    if (m_info)
+	return m_info->timestamp;
     else
 	return 0;
 }
@@ -83,9 +83,9 @@ QList< RRCrtc > EasyRandR::Output::validCrtcs(void )
 {
     QList<RRCrtc> list;
     
-    if (info)
-	for (int i=0; i<info->ncrtc; i++)
-	    list << info->crtcs[i];
+    if (m_info)
+	for (int i=0; i<m_info->ncrtc; i++)
+	    list << m_info->crtcs[i];
 
     return list;
 }
@@ -94,25 +94,25 @@ QList< RROutput > EasyRandR::Output::clones(void )
 {
     QList<RROutput> list;
 
-    if (info)
-	for (int i=0; i<info->nclone; i++)
-	    list << info->clones[i];
+    if (m_info)
+	for (int i=0; i<m_info->nclone; i++)
+	    list << m_info->clones[i];
 
     return list;
 }
 
 QString EasyRandR::Output::name(void )
 {
-    if (info)
-	return QString::fromUtf8(info->name);
+    if (m_info)
+	return QString::fromUtf8(m_info->name);
     else
 	return QString();
 }
 
 Connection EasyRandR::Output::connectionStatus(void )
 {
-    if (info)
-	return info->connection;
+    if (m_info)
+	return m_info->connection;
     else
 	return RR_UnknownConnection;
 }
@@ -122,14 +122,14 @@ QMap<RRMode,QString> EasyRandR::Output::validModes(void )
     QList<RRMode> list;
     QMap<RRMode,QString> map;
     
-    if (info) {
+    if (m_info) {
 	// Get the valid modes for the output
-	for (int i=0; i<info->nmode; i++)
-	    list << info->modes[i];
+	for (int i=0; i<m_info->nmode; i++)
+	    list << m_info->modes[i];
 	
 	// Get the valid modes for the screen
 	QList<XRRModeInfo> mlist;
-	mlist = screen->getModes();
+	mlist = m_screen->getModes();
 	
 	// Create the map of modes that contains keys in the form of RRMode,Modename
 	for (int i=0; i<list.count(); i++) {
@@ -149,24 +149,24 @@ QMap<RRMode,QString> EasyRandR::Output::validModes(void )
 
 ulong EasyRandR::Output::heightmm(void )
 {
-    if (info)
-	return info->mm_height;
+    if (m_info)
+	return m_info->mm_height;
     else
 	return 0;
 }
 
 ulong EasyRandR::Output::widthmm(void )
 {
-    if (info)
-	return info->mm_width;
+    if (m_info)
+	return m_info->mm_width;
     else
 	return 0;
 }
 
 SubpixelOrder EasyRandR::Output::subpixelOrder(void )
 {
-    if (info)
-	return info->subpixel_order;
+    if (m_info)
+	return m_info->subpixel_order;
     else
 	return 0;
 }
@@ -175,65 +175,65 @@ QList< RRMode > EasyRandR::Output::preferedModes(void )
 {
     QList<RRMode> list;
     
-    if (info)
-	for (int i=0; i<info->npreferred; i++)
-	    list << info->modes[i];
+    if (m_info)
+	for (int i=0; i<m_info->npreferred; i++)
+	    list << m_info->modes[i];
 
     return list;
 }
 
 RRMode EasyRandR::Output::currentMode(void )
 {
-    if (pcrtc)
-	return pcrtc->mode();
+    if (m_pcrtc)
+	return m_pcrtc->mode();
     else
 	return 0;
 }
 
 uint EasyRandR::Output::height(void )
 {
-    if (pcrtc)
-	return pcrtc->height();
+    if (m_pcrtc)
+	return m_pcrtc->height();
     else
 	return 0;
 }
 
 uint EasyRandR::Output::width(void )
 {
-    if (pcrtc)
-	return pcrtc->width();
+    if (m_pcrtc)
+	return m_pcrtc->width();
     else
 	return 0;
 }
 
 int EasyRandR::Output::x(void )
 {
-    if (pcrtc)
-	return pcrtc->x();
+    if (m_pcrtc)
+	return m_pcrtc->x();
     else
 	return 0;
 }
 
 int EasyRandR::Output::y(void )
 {
-    if (pcrtc)
-	return pcrtc->y();
+    if (m_pcrtc)
+	return m_pcrtc->y();
     else
 	return 0;
 }
 
 Rotation EasyRandR::Output::currentRotation(void )
 {
-    if (pcrtc)
-	return pcrtc->rotation();
+    if (m_pcrtc)
+	return m_pcrtc->rotation();
     else
 	return RR_Rotate_0;
 }
 
 Rotation EasyRandR::Output::validRotations(void )
 {
-    if (pcrtc)
-	return pcrtc->supportedRotations();
+    if (m_pcrtc)
+	return m_pcrtc->supportedRotations();
     else
 	return 0;
 }
@@ -271,7 +271,7 @@ bool EasyRandR::Output::setOutputs ( QList< RROutput > outputs )
 {
     bool ret = true;
     for (int i=0; i<outputs.count(); i++)
-	if (pcrtc->possibleOutputs().indexOf(outputs[i]) == -1)
+	if (m_pcrtc->possibleOutputs().indexOf(outputs[i]) == -1)
 	    ret = false;
 
     if (ret) {
@@ -284,22 +284,22 @@ bool EasyRandR::Output::setOutputs ( QList< RROutput > outputs )
 
 int EasyRandR::Output::applySettings(void )
 {
-    if (pcrtc) {
+    if (m_pcrtc) {
 	if (!m_positionChanged) {
-	    m_newx = pcrtc->x();
-	    m_newy = pcrtc->y();
+	    m_newx = m_pcrtc->x();
+	    m_newy = m_pcrtc->y();
 	}
 	
 	if (!m_modeChanged)
-	    m_newmode = pcrtc->mode();
+	    m_newmode = m_pcrtc->mode();
 	
 	if (!m_rotationChanged)
-	    m_newrotation = pcrtc->rotation();
+	    m_newrotation = m_pcrtc->rotation();
 	
 	if (!m_outputsChanged)
-	    m_newoutputs = pcrtc->connectedTo();
+	    m_newoutputs = m_pcrtc->connectedTo();
 	
-	return pcrtc->setCrtcConfig(m_newx, m_newy, m_newmode, m_newrotation, m_newoutputs);
+	return m_pcrtc->setCrtcConfig(m_newx, m_newy, m_newmode, m_newrotation, m_newoutputs);
     }
     else
 	return -1; // TODO: Find a more appropriate return value
@@ -307,7 +307,7 @@ int EasyRandR::Output::applySettings(void )
 
 RROutput EasyRandR::Output::id(void )
 {
-    return outputId;
+    return m_outputId;
 }
 
 RRMode EasyRandR::Output::newMode(void )
@@ -315,7 +315,7 @@ RRMode EasyRandR::Output::newMode(void )
     if (m_modeChanged)
 	return m_newmode;
     else
-	return pcrtc->mode();
+	return m_pcrtc->mode();
 }
 
 int EasyRandR::Output::newx(void )
@@ -323,7 +323,7 @@ int EasyRandR::Output::newx(void )
     if (m_positionChanged)
 	return m_newx;
     else
-	return pcrtc->x();
+	return m_pcrtc->x();
 }
 
 int EasyRandR::Output::newy(void )
@@ -331,7 +331,7 @@ int EasyRandR::Output::newy(void )
     if (m_positionChanged)
 	return m_newy;
     else
-	return pcrtc->y();
+	return m_pcrtc->y();
 }
 
 Rotation EasyRandR::Output::newRotation(void)
@@ -339,7 +339,7 @@ Rotation EasyRandR::Output::newRotation(void)
     if (m_rotationChanged)
 	return m_newrotation;
     else
-	return pcrtc->rotation();
+	return m_pcrtc->rotation();
 }
 
 bool EasyRandR::Output::modeChanged(void )
@@ -364,27 +364,27 @@ bool EasyRandR::Output::rotationChanged(void )
 
 void EasyRandR::Output::off(void )
 {
-    if (pcrtc) {
+    if (m_pcrtc) {
 	// Keep current settings as new to be able to recover
 	if (!m_modeChanged) {
-	    m_newmode = pcrtc->mode();
+	    m_newmode = m_pcrtc->mode();
 	    m_modeChanged = true;
 	}
 	if (!m_outputsChanged) {
-	    m_newoutputs = pcrtc->connectedTo();
+	    m_newoutputs = m_pcrtc->connectedTo();
 	    m_outputsChanged = true;
 	}
 	if (!m_positionChanged) {
-	    m_newx = pcrtc->x();
-	    m_newy = pcrtc->y();
+	    m_newx = m_pcrtc->x();
+	    m_newy = m_pcrtc->y();
 	    m_positionChanged = true;
 	}
 	if (!m_rotationChanged) {
-	    m_newrotation = pcrtc->rotation();
+	    m_newrotation = m_pcrtc->rotation();
 	    m_rotationChanged = true;
 	}
 	
-	pcrtc->setCrtcConfig(pcrtc->x(), pcrtc->y(), None, pcrtc->rotation(), pcrtc->connectedTo());
+	m_pcrtc->setCrtcConfig(m_pcrtc->x(), m_pcrtc->y(), None, m_pcrtc->rotation(), m_pcrtc->connectedTo());
     }
 }
 
@@ -392,4 +392,46 @@ void EasyRandR::Output::on(void )
 {
     // Settings are already saved as new so we just need to apply them
     applySettings();
+}
+
+uint EasyRandR::Output::maxX(void )
+{
+    uint maxPos = 0;
+
+    if (m_info) {
+	maxPos = m_screen->maxWidth();
+	
+	// Get the valid modes for the screen
+	QList<XRRModeInfo> mlist;
+	mlist = m_screen->getModes();
+	
+	// Create the map of modes that contains keys in the form of RRMode,Modename
+	for (int i=0; i<mlist.count(); i++) {
+	    if (mlist[i].id == newMode())
+		maxPos -= mlist[i].width;
+	}    
+    }
+
+    return maxPos;
+}
+
+uint EasyRandR::Output::maxY(void )
+{
+    uint maxPos = 0;
+
+    if (m_info) {
+	maxPos = m_screen->maxHeight();
+	
+	// Get the valid modes for the screen
+	QList<XRRModeInfo> mlist;
+	mlist = m_screen->getModes();
+	
+	// Create the map of modes that contains keys in the form of RRMode,Modename
+	for (int i=0; i<mlist.count(); i++) {
+	    if (mlist[i].id == newMode())
+		maxPos -= mlist[i].height;
+	}    
+    }
+
+    return maxPos;
 }
