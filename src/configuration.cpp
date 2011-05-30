@@ -152,6 +152,12 @@ void EasyRandR::Configuration::updateScreenSize(int screen, QList< EasyRandR::Ou
 
 	qDebug() << (int) modewidth << 'x' << (int) modeheight << '+' << outputList.at(i)->newx() << '+' << outputList.at(i)->newy();
 	QRect r(0, 0, outputList.at(i)->newx()+modewidth, outputList.at(i)->newy()+modeheight);
+	if ((outputList.at(i)->newRotation() & RR_Rotate_90) || (outputList.at(i)->newRotation() & RR_Rotate_270)) {
+	    // The crtc has to be rotated so the height becomes width and the width becomes height
+	    int tmp = r.width();
+	    r.setWidth(r.height());
+	    r.setHeight(tmp);
+	}
 	screenRect = screenRect.united(r);
 	qDebug() << "ScreenRect size" << screenRect.width() << 'x' << screenRect.height();
     }
