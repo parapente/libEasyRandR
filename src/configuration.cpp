@@ -150,7 +150,7 @@ void EasyRandR::Configuration::updateScreenSize(int screen, QList< EasyRandR::Ou
 	}
 
 	qDebug() << (int) modewidth << 'x' << (int) modeheight;
-	QRect r(outputList.at(i)->x(), outputList.at(i)->y(), modewidth, modeheight);
+	QRect r(0, 0, outputList.at(i)->x()+modewidth, outputList.at(i)->y()+modeheight);
 	screenRect = screenRect.united(r);
 	qDebug() << "ScreenRect size" << screenRect.width() << 'x' << screenRect.height();
     }
