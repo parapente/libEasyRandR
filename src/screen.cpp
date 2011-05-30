@@ -203,3 +203,23 @@ QSize EasyRandR::Screen::getSize ( void )
     else
 	return QSize();
 }
+
+uint EasyRandR::Screen::minHeight(void )
+{
+    return m_minHeight;
+}
+
+uint EasyRandR::Screen::maxHeight(void )
+{
+    return m_maxHeight;
+}
+
+uint EasyRandR::Screen::minWidth(void )
+{
+    return m_minWidth;
+}
+
+uint EasyRandR::Screen::maxWidth(void )
+{
+    return m_maxWidth;
+}

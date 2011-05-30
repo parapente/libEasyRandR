@@ -140,6 +140,10 @@ public:
     bool setSize(QSize s);
     
     QSize getSize(void);
+    uint minWidth(void);
+    uint maxWidth(void);
+    uint minHeight(void);
+    uint maxHeight(void);
 
 private:
     int m_id;
@@ -149,6 +153,8 @@ private:
     
     XRRScreenResources *m_resources;
     XRRScreenConfiguration *m_info;
+    
+    // These are all set as int and not uint deliberately. XRRGetScreenSizeRange doesn't like uints!
     int m_minWidth, m_minHeight, m_maxWidth, m_maxHeight;
 };
 
