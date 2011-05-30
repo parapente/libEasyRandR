@@ -334,6 +334,14 @@ int EasyRandR::Output::newy(void )
 	return pcrtc->y();
 }
 
+Rotation EasyRandR::Output::newRotation(void)
+{
+    if (m_rotationChanged)
+	return m_newrotation;
+    else
+	return pcrtc->rotation();
+}
+
 bool EasyRandR::Output::modeChanged(void )
 {
     return m_modeChanged;

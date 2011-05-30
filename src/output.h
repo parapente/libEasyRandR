@@ -164,6 +164,16 @@ public:
     Rotation currentRotation(void);
     
     /**
+     * @brief The new rotation & reflect setting
+     *
+     * This setting has not been applied to the output yet. If there was no change,
+     * the current rotation is returned.
+     * 
+     * @return Rotation
+     **/
+    Rotation newRotation(void);
+    
+    /**
      * @brief The width of the output in pixels
      *
      * @return uint
