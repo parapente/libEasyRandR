@@ -99,8 +99,10 @@ void EasyRandR::Screen::updateInfo(void )
     
     if (m_info)
 	m_infoValid = true;
-    else
+    else {
 	m_infoValid = false;
+	qDebug() << "Error updating screen info!";
+    }
 }
 
 bool EasyRandR::Screen::isResValid(void )
@@ -126,8 +128,10 @@ void EasyRandR::Screen::updateResources(void )
     
     if (m_resources)
 	m_resValid = true;
-    else
+    else {
 	m_resValid = false;
+	qDebug() << "Cannot update screen resources!";
+    }
 }
 
 Time EasyRandR::Screen::timestamp(void )
@@ -169,6 +173,7 @@ bool EasyRandR::Screen::setSize(QSize s)
 	Time tmp = m_resources->configTimestamp;
 	Display *dpy = XOpenDisplay(NULL);
 	if (dpy) {
+	    qDebug() << "XRRSetScreenSize(" << dpy << ',' << m_window << ',' << s.width() << ',' << s.height() << ',' << (int)((float)s.width())/96*25.4 << ',' << (int)((float)s.height())/96*25.4 << ")\n";
 	    XRRSetScreenSize(dpy,m_window,s.width(),s.height(),(int)((float)s.width())/96*25.4,(int)((float)s.height())/96*25.4);
 	    XCloseDisplay(dpy);
 	    updateResources();

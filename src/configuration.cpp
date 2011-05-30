@@ -37,6 +37,7 @@ EasyRandR::Configuration::Configuration(QObject* parent): QObject(parent)
     if (valid) {
 	// Get version supported by the XServer
 	XRRQueryVersion(display, &ver_major, &ver_minor);
+	qDebug() << "RandR version " << ver_major << "." << ver_minor << " supported";
 	int count;
 	
 	count = ScreenCount(display);

@@ -52,8 +52,10 @@ void EasyRandR::Crtc::updateInfo(void)
     
     if (m_info)
 	m_valid = true;
-    else
+    else {
 	m_valid = false;
+	qDebug() << "Error updating crtc info!";
+    }
 }
 
 uint EasyRandR::Crtc::height(void )
@@ -144,10 +146,14 @@ int EasyRandR::Crtc::setCrtcConfig(int x, int y, RRMode mode, Rotation rotation,
     
     Display *dpy = XOpenDisplay(NULL);
     if (dpy) {
-	if (mode == None) // If we want to disable Crtc...
+	if (mode == None) {// If we want to disable Crtc...
+	    qDebug() << "XRRSetCrtcConfig(" << dpy << ',' << m_screen->getResources() << ',' << m_id << ',' << timestamp() << ',' << x << ',' << y << ',' << mode << ',' << rotation << ",NULL,0)\n";
 	    ret = XRRSetCrtcConfig(dpy,m_screen->getResources(),m_id,timestamp(),x,y,mode,rotation,NULL,0);
-	else
+	}
+	else {
+	    qDebug() << "XRRSetCrtcConfig(" << dpy << ',' << m_screen->getResources() << ',' << m_id << ',' << timestamp() << ',' << x << ',' << y << ',' << mode << ',' << rotation << ',' << outs << ',' << outputs.count() << ")\n";
 	    ret = XRRSetCrtcConfig(dpy,m_screen->getResources(),m_id,timestamp(),x,y,mode,rotation,outs,outputs.count());
+	}
     }
     else
 	ret = -1; // TODO: Check validity of the return value
