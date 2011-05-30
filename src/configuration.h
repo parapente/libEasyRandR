@@ -89,14 +89,15 @@ public:
     int applyConfiguration(void);
     
 private:
-    bool valid;
-    int ver_major, ver_minor;
-    int eventBase, errorBase;
+    bool m_valid;
+    int m_ver_major, m_ver_minor;
+    int m_eventBase, m_errorBase;
 
-    QList<Window> window;
+    QList<Window> m_window;
 
-    QVector<QList<EasyRandR::Output*> > outputs;
-    QMap<int,Screen*> screens;
+    QVector<QList<EasyRandR::Output*> > m_outputs;
+    QMap<int,Screen*> m_screens;
+    
     void updateScreenSize(int screen, QList< EasyRandR::Output* > outputList);
 };
 
