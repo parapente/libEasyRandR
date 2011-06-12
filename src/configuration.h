@@ -55,7 +55,7 @@ public:
      *
      * @return QMap<RROutput,EasyRandR::Output*>
      **/
-    QMap<RROutput,Output*> getOutputs( int screen);
+    QMap<RROutput,Output*> getOutputs( int screen) const;
     
     /**
      * @brief Get a simple list of all outputs of a screen
@@ -63,28 +63,28 @@ public:
      * @param screen is the number of the screen
      * @return QList<Output*>
      **/
-    QList<Output*> getOutputList(int screen);
+    QList<Output*> getOutputList(int screen) const;
     
     /**
      * @brief Get the number of virtual framebuffers available
      *
      * @return int
      **/
-    int getScreenCount(void);
+    int getScreenCount(void) const;
     
     /**
      * @brief Get a mapping of the screens
      * 
      * @return QMap<int,Screen*>
      **/
-    QMap<int,Screen*> getScreens(void);
+    QMap<int,Screen*> getScreens(void) const;
     
     /**
      * @brief Get a simple list of all available screens
      * 
      * @return QList<Screen*>
      **/
-    QList<Screen*> getScreenList(void);
+    QList<Screen*> getScreenList(void) const;
     
     int applyConfiguration(void);
     

@@ -32,7 +32,7 @@ EasyRandR::Crtc::~Crtc()
 }
 
 
-bool EasyRandR::Crtc::isValid(void)
+bool EasyRandR::Crtc::isValid(void) const
 {
     return m_valid;
 }
@@ -58,7 +58,7 @@ void EasyRandR::Crtc::updateInfo(void)
     }
 }
 
-uint EasyRandR::Crtc::height(void )
+uint EasyRandR::Crtc::height(void) const
 {
     if (m_info)
 	return m_info->height;
@@ -66,7 +66,7 @@ uint EasyRandR::Crtc::height(void )
 	return 0;
 }
 
-uint EasyRandR::Crtc::width(void )
+uint EasyRandR::Crtc::width(void) const
 {
     if (m_info)
 	return m_info->width;
@@ -74,7 +74,7 @@ uint EasyRandR::Crtc::width(void )
 	return 0;
 }
 
-RRMode EasyRandR::Crtc::mode(void )
+RRMode EasyRandR::Crtc::mode(void) const
 {
     if (m_info)
 	return m_info->mode;
@@ -82,7 +82,7 @@ RRMode EasyRandR::Crtc::mode(void )
 	return 0;
 }
 
-Rotation EasyRandR::Crtc::rotation(void )
+Rotation EasyRandR::Crtc::rotation(void) const
 {
     if (m_info)
 	return m_info->rotation;
@@ -90,7 +90,7 @@ Rotation EasyRandR::Crtc::rotation(void )
 	return 0;
 }
 
-Rotation EasyRandR::Crtc::supportedRotations(void )
+Rotation EasyRandR::Crtc::supportedRotations(void) const
 {
     if (m_info)
 	return m_info->rotations;
@@ -98,7 +98,7 @@ Rotation EasyRandR::Crtc::supportedRotations(void )
 	return 0;
 }
 
-QList< RROutput > EasyRandR::Crtc::connectedTo(void )
+QList< RROutput > EasyRandR::Crtc::connectedTo(void) const
 {
     QList<RROutput> list;
     
@@ -109,7 +109,7 @@ QList< RROutput > EasyRandR::Crtc::connectedTo(void )
     return list;
 }
 
-Time EasyRandR::Crtc::timestamp(void )
+Time EasyRandR::Crtc::timestamp(void) const
 {
     if (m_info)
 	return m_info->timestamp;
@@ -117,7 +117,7 @@ Time EasyRandR::Crtc::timestamp(void )
 	return 0;
 }
 
-uint EasyRandR::Crtc::x(void )
+uint EasyRandR::Crtc::x(void) const
 {
     if (m_info)
 	return m_info->x;
@@ -125,7 +125,7 @@ uint EasyRandR::Crtc::x(void )
 	return 0;
 }
 
-uint EasyRandR::Crtc::y(void )
+uint EasyRandR::Crtc::y(void) const
 {
     if (m_info)
 	return m_info->y;
@@ -133,7 +133,7 @@ uint EasyRandR::Crtc::y(void )
 	return 0;
 }
 
-int EasyRandR::Crtc::setCrtcConfig(int x, int y, RRMode mode, Rotation rotation, QList< RROutput > outputs )
+int EasyRandR::Crtc::setCrtcConfig(int x, int y, RRMode mode, Rotation rotation, QList< RROutput > outputs)
 {
     int ret;
     
@@ -163,7 +163,7 @@ int EasyRandR::Crtc::setCrtcConfig(int x, int y, RRMode mode, Rotation rotation,
     return ret;
 }
 
-QList< RROutput > EasyRandR::Crtc::possibleOutputs ( void )
+QList< RROutput > EasyRandR::Crtc::possibleOutputs(void) const
 {
     QList<RROutput> list;
     

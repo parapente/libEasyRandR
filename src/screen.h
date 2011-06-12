@@ -46,14 +46,14 @@ public:
      *
      * @return Time
      **/
-    Time configTimestamp(void);
+    Time configTimestamp(void) const;
     
     /**
      * @brief Returns the last timestamp
      *
      * @return Time
      **/
-    Time timestamp(void);
+    Time timestamp(void) const;
     
     /**
      * @brief Get the list of available outputs
@@ -62,14 +62,14 @@ public:
      * 
      * @return QList< RROutput >
      **/
-    QList<RROutput> getOutputs(void);
+    QList<RROutput> getOutputs(void) const;
     
     /**
      * @brief Get number of available outputs
      *
      * @return int
      **/
-    int getOutputCount(void);
+    int getOutputCount(void) const;
     
     /**
      * @brief Get the list of available Crtcs
@@ -78,7 +78,7 @@ public:
      * 
      * @return QList< RRCrtc >
      **/
-    QList<RRCrtc> getCrtcs(void);
+    QList<RRCrtc> getCrtcs(void) const;
     
     /**
      * @brief Get a list of available modes
@@ -89,7 +89,7 @@ public:
      * 
      * @return QList< XRRModeInfo >
      **/
-    QList< XRRModeInfo > getModes(void);
+    QList< XRRModeInfo > getModes(void) const;
     
     /**
      * @brief Get the screen resources
@@ -99,21 +99,21 @@ public:
      *
      * @return XRRScreenResources*
      **/
-    XRRScreenResources *getResources(void);
+    XRRScreenResources *getResources(void) const;
     
     /**
      * @brief Returns true if screen info is valid, false otherwise
      *
      * @return bool
      **/
-    bool isInfoValid(void);
+    bool isInfoValid(void) const;
     
     /**
      * @brief Returns true if screen resources are valid, false otherwise
      *
      * @return bool
      **/
-    bool isResValid(void);
+    bool isResValid(void) const;
     
     /**
      * @brief Updates the screen info
@@ -139,11 +139,11 @@ public:
      **/
     bool setSize(QSize s);
     
-    QSize getSize(void);
-    uint minWidth(void);
-    uint maxWidth(void);
-    uint minHeight(void);
-    uint maxHeight(void);
+    QSize getSize(void) const;
+    uint minWidth(void) const;
+    uint maxWidth(void) const;
+    uint minHeight(void) const;
+    uint maxHeight(void) const;
 
 private:
     int m_id;

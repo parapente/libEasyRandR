@@ -39,7 +39,7 @@ public:
      *
      * @return bool
      **/
-    bool isValid(void);
+    bool isValid(void) const;
     
     /**
      * @brief Force update of crtc info
@@ -51,28 +51,28 @@ public:
      *
      * @return uint
      **/
-    uint width(void);
+    uint width(void) const;
     
     /**
      * @brief Returns the height of crtc in pixels
      *
      * @return uint
      **/
-    uint height(void);
+    uint height(void) const;
     
     /**
      * @brief Returns the mode id applied to this crtc
      *
      * @return RRMode
      **/
-    RRMode mode(void);
+    RRMode mode(void) const;
     
     /**
      * @brief Get what rotation and/or reflection is applied to this crtc
      *
      * @return Rotation
      **/
-    Rotation rotation(void);
+    Rotation rotation(void) const;
     
     /**
      * @brief Returns the supported rotations and reflections
@@ -82,7 +82,7 @@ public:
      * 
      * @return Rotation
      **/
-    Rotation supportedRotations(void);
+    Rotation supportedRotations(void) const;
     
     /**
      * @brief Get which outputs are connected to this crtc
@@ -92,28 +92,28 @@ public:
      * 
      * @return QList< RROutput >
      **/
-    QList<RROutput> connectedTo(void);
+    QList<RROutput> connectedTo(void) const;
     
     /**
      * @brief Returns the current timestamp
      *
      * @return Time
      **/
-    Time timestamp(void);
+    Time timestamp(void) const;
     
     /**
      * @brief Get the x coordinate of the crtc in screen space
      *
      * @return uint
      **/
-    uint x(void);
+    uint x(void) const;
 
     /**
      * @brief Get the y coordinate of the crtc in screen space
      *
      * @return uint
      **/
-    uint y(void);
+    uint y(void) const;
     
     /**
      * @brief Tries to set a new configuration for this Crtc and returns the result of this try
@@ -134,7 +134,7 @@ public:
      *
      * @return QList< RROutput >
      **/
-    QList<RROutput> possibleOutputs(void);
+    QList<RROutput> possibleOutputs(void) const;
     
 private:
     EasyRandR::Screen *m_screen;

@@ -48,7 +48,7 @@ public:
      *
      * @return bool
      **/
-    bool isValid(void);
+    bool isValid(void) const;
     
     /**
      * @brief Refresh the output info
@@ -62,35 +62,35 @@ public:
      *
      * @return QList< RROutput >
      **/
-    QList<RROutput> clones(void);
+    QList<RROutput> clones(void) const;
     
     /**
      * @brief Returns the list of valid crtc connections
      *
      * @return QList< RRCrtc >
      **/
-    QList<RRCrtc> validCrtcs(void);
+    QList<RRCrtc> validCrtcs(void) const;
     
     /**
      * @brief Returns the crtc id this output is connected to.
      *
      * @return RRCrtc
      **/
-    RRCrtc crtc(void);
+    RRCrtc crtc(void) const;
     
     /**
      * @brief Gives the time of the last change of the output
      *
      * @return Time
      **/
-    Time timestamp(void);
+    Time timestamp(void) const;
     
     /**
      * @brief Returns the name of the output
      *
      * @return QString
      **/
-    QString name(void);
+    QString name(void) const;
     
     /**
      * @brief Returns a map of all valid modes.
@@ -99,7 +99,7 @@ public:
      *
      * @return QMap< RRMode, QString >
      **/
-    QMap<RRMode,QString> validModes(void);
+    QMap<RRMode,QString> validModes(void) const;
     
     /**
      * @brief Returns the status of the output connection.
@@ -110,28 +110,28 @@ public:
      *
      * @return Connection
      **/
-    Connection connectionStatus(void);
+    Connection connectionStatus(void) const;
     
     /**
      * @brief The height of the output in mm
      *
      * @return ulong
      **/
-    ulong heightmm(void);
+    ulong heightmm(void) const;
     
     /**
      * @brief The width of the output in mm
      *
      * @return ulong
      **/
-    ulong widthmm(void);
+    ulong widthmm(void) const;
     
     /**
      * @brief Gives the subpixel order of the output
      *
      * @return SubpixelOrder
      **/
-    SubpixelOrder subpixelOrder(void);
+    SubpixelOrder subpixelOrder(void) const;
     
     /**
      * @brief Gives the ouput's prefered modes.
@@ -142,7 +142,7 @@ public:
      *
      * @return QList< RRMode >
      **/
-    QList<RRMode> preferedModes(void);
+    QList<RRMode> preferedModes(void) const;
     
     // Functions using Crtc object
     /**
@@ -154,14 +154,14 @@ public:
      *
      * @return Rotation
      **/
-    Rotation validRotations(void);
+    Rotation validRotations(void) const;
     
     /**
      * @brief Returns the current rotation & reflect setting
      *
      * @return Rotation
      **/
-    Rotation currentRotation(void);
+    Rotation currentRotation(void) const;
     
     /**
      * @brief The new rotation & reflect setting
@@ -171,21 +171,21 @@ public:
      * 
      * @return Rotation
      **/
-    Rotation newRotation(void);
+    Rotation newRotation(void) const;
     
     /**
      * @brief The width of the output in pixels
      *
      * @return uint
      **/
-    uint width(void);
+    uint width(void) const;
     
     /**
      * @brief The height of the output in pixels
      *
      * @return uint
      **/
-    uint height(void);
+    uint height(void) const;
     
     /**
      * @brief The maximum value the x position can take depending on the resolution selected
@@ -195,7 +195,7 @@ public:
      * 
      * @return uint
      **/
-    uint maxX(void);
+    uint maxX(void) const;
 
     /**
      * @brief The maximum value the y position can take depending on the resolution selected
@@ -205,14 +205,14 @@ public:
      *
      * @return uint
      **/
-    uint maxY(void);
+    uint maxY(void) const;
     
     /**
      * @brief The x position of the output in the virtual framebuffer called screen
      *
      * @return int
      **/
-    int x(void);
+    int x(void) const;
     
     /**
      * @brief The new x position of the output in the virtual framebuffer called screen
@@ -222,14 +222,14 @@ public:
      * 
      * @return int
      **/
-    int newx(void);
+    int newx(void) const;
     
     /**
      * @brief The y position of the output in the virtual framebuffer called screen
      *
      * @return int
      **/
-    int y(void);
+    int y(void) const;
     
     /**
      * @brief The new y position of the output in the virtual framebuffer called screen
@@ -239,14 +239,14 @@ public:
      * 
      * @return int
      **/
-    int newy(void);
+    int newy(void) const;
     
     /**
      * @brief Get the id of the current mode used by the output
      *
      * @return RRMode
      **/
-    RRMode currentMode(void);
+    RRMode currentMode(void) const;
     
     /**
      * @brief Get the id of the new mode that will be used by the output.
@@ -256,7 +256,7 @@ public:
      *
      * @return RRMode
      **/
-    RRMode newMode(void);
+    RRMode newMode(void) const;
     
     /**
      * @brief Set the new position of the output in screen space.
@@ -312,12 +312,12 @@ public:
      * 
      * @return RROutput
      **/
-    RROutput id(void);
+    RROutput id(void) const;
     
-    bool positionChanged(void);
-    bool modeChanged(void);
-    bool rotationChanged(void);
-    bool outputsChanged(void);
+    bool positionChanged(void) const;
+    bool modeChanged(void) const;
+    bool rotationChanged(void) const;
+    bool outputsChanged(void) const;
     void off(void);
     void on(void);
     

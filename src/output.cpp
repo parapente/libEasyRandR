@@ -58,12 +58,12 @@ void EasyRandR::Output::updateInfo(void)
     }
 }
 
-bool EasyRandR::Output::isValid(void )
+bool EasyRandR::Output::isValid(void) const
 {
     return m_valid;
 }
 
-RRCrtc EasyRandR::Output::crtc(void )
+RRCrtc EasyRandR::Output::crtc(void) const
 {
     if (m_info)
 	return m_info->crtc;
@@ -71,7 +71,7 @@ RRCrtc EasyRandR::Output::crtc(void )
 	return 0;
 }
 
-Time EasyRandR::Output::timestamp(void )
+Time EasyRandR::Output::timestamp(void) const
 {
     if (m_info)
 	return m_info->timestamp;
@@ -79,7 +79,7 @@ Time EasyRandR::Output::timestamp(void )
 	return 0;
 }
 
-QList< RRCrtc > EasyRandR::Output::validCrtcs(void )
+QList< RRCrtc > EasyRandR::Output::validCrtcs(void) const
 {
     QList<RRCrtc> list;
     
@@ -90,7 +90,7 @@ QList< RRCrtc > EasyRandR::Output::validCrtcs(void )
     return list;
 }
 
-QList< RROutput > EasyRandR::Output::clones(void )
+QList< RROutput > EasyRandR::Output::clones(void) const
 {
     QList<RROutput> list;
 
@@ -101,7 +101,7 @@ QList< RROutput > EasyRandR::Output::clones(void )
     return list;
 }
 
-QString EasyRandR::Output::name(void )
+QString EasyRandR::Output::name(void) const
 {
     if (m_info)
 	return QString::fromUtf8(m_info->name);
@@ -109,7 +109,7 @@ QString EasyRandR::Output::name(void )
 	return QString();
 }
 
-Connection EasyRandR::Output::connectionStatus(void )
+Connection EasyRandR::Output::connectionStatus(void) const
 {
     if (m_info)
 	return m_info->connection;
@@ -117,7 +117,7 @@ Connection EasyRandR::Output::connectionStatus(void )
 	return RR_UnknownConnection;
 }
 
-QMap<RRMode,QString> EasyRandR::Output::validModes(void )
+QMap<RRMode,QString> EasyRandR::Output::validModes(void) const
 {
     QList<RRMode> list;
     QMap<RRMode,QString> map;
@@ -147,7 +147,7 @@ QMap<RRMode,QString> EasyRandR::Output::validModes(void )
     return map;
 }
 
-ulong EasyRandR::Output::heightmm(void )
+ulong EasyRandR::Output::heightmm(void) const
 {
     if (m_info)
 	return m_info->mm_height;
@@ -155,7 +155,7 @@ ulong EasyRandR::Output::heightmm(void )
 	return 0;
 }
 
-ulong EasyRandR::Output::widthmm(void )
+ulong EasyRandR::Output::widthmm(void) const
 {
     if (m_info)
 	return m_info->mm_width;
@@ -163,7 +163,7 @@ ulong EasyRandR::Output::widthmm(void )
 	return 0;
 }
 
-SubpixelOrder EasyRandR::Output::subpixelOrder(void )
+SubpixelOrder EasyRandR::Output::subpixelOrder(void) const
 {
     if (m_info)
 	return m_info->subpixel_order;
@@ -171,7 +171,7 @@ SubpixelOrder EasyRandR::Output::subpixelOrder(void )
 	return 0;
 }
 
-QList< RRMode > EasyRandR::Output::preferedModes(void )
+QList< RRMode > EasyRandR::Output::preferedModes(void) const
 {
     QList<RRMode> list;
     
@@ -182,7 +182,7 @@ QList< RRMode > EasyRandR::Output::preferedModes(void )
     return list;
 }
 
-RRMode EasyRandR::Output::currentMode(void )
+RRMode EasyRandR::Output::currentMode(void) const
 {
     if (m_pcrtc)
 	return m_pcrtc->mode();
@@ -190,7 +190,7 @@ RRMode EasyRandR::Output::currentMode(void )
 	return 0;
 }
 
-uint EasyRandR::Output::height(void )
+uint EasyRandR::Output::height(void) const
 {
     if (m_pcrtc)
 	return m_pcrtc->height();
@@ -198,7 +198,7 @@ uint EasyRandR::Output::height(void )
 	return 0;
 }
 
-uint EasyRandR::Output::width(void )
+uint EasyRandR::Output::width(void) const
 {
     if (m_pcrtc)
 	return m_pcrtc->width();
@@ -206,7 +206,7 @@ uint EasyRandR::Output::width(void )
 	return 0;
 }
 
-int EasyRandR::Output::x(void )
+int EasyRandR::Output::x(void) const
 {
     if (m_pcrtc)
 	return m_pcrtc->x();
@@ -214,7 +214,7 @@ int EasyRandR::Output::x(void )
 	return 0;
 }
 
-int EasyRandR::Output::y(void )
+int EasyRandR::Output::y(void) const
 {
     if (m_pcrtc)
 	return m_pcrtc->y();
@@ -222,7 +222,7 @@ int EasyRandR::Output::y(void )
 	return 0;
 }
 
-Rotation EasyRandR::Output::currentRotation(void )
+Rotation EasyRandR::Output::currentRotation(void) const
 {
     if (m_pcrtc)
 	return m_pcrtc->rotation();
@@ -230,7 +230,7 @@ Rotation EasyRandR::Output::currentRotation(void )
 	return RR_Rotate_0;
 }
 
-Rotation EasyRandR::Output::validRotations(void )
+Rotation EasyRandR::Output::validRotations(void) const
 {
     if (m_pcrtc)
 	return m_pcrtc->supportedRotations();
@@ -305,12 +305,12 @@ int EasyRandR::Output::applySettings(void )
 	return -1; // TODO: Find a more appropriate return value
 }
 
-RROutput EasyRandR::Output::id(void )
+RROutput EasyRandR::Output::id(void) const
 {
     return m_outputId;
 }
 
-RRMode EasyRandR::Output::newMode(void )
+RRMode EasyRandR::Output::newMode(void) const
 {
     if (m_modeChanged)
 	return m_newmode;
@@ -318,7 +318,7 @@ RRMode EasyRandR::Output::newMode(void )
 	return m_pcrtc->mode();
 }
 
-int EasyRandR::Output::newx(void )
+int EasyRandR::Output::newx(void) const
 {
     if (m_positionChanged)
 	return m_newx;
@@ -326,7 +326,7 @@ int EasyRandR::Output::newx(void )
 	return m_pcrtc->x();
 }
 
-int EasyRandR::Output::newy(void )
+int EasyRandR::Output::newy(void) const
 {
     if (m_positionChanged)
 	return m_newy;
@@ -334,7 +334,7 @@ int EasyRandR::Output::newy(void )
 	return m_pcrtc->y();
 }
 
-Rotation EasyRandR::Output::newRotation(void)
+Rotation EasyRandR::Output::newRotation(void) const
 {
     if (m_rotationChanged)
 	return m_newrotation;
@@ -342,22 +342,22 @@ Rotation EasyRandR::Output::newRotation(void)
 	return m_pcrtc->rotation();
 }
 
-bool EasyRandR::Output::modeChanged(void )
+bool EasyRandR::Output::modeChanged(void) const
 {
     return m_modeChanged;
 }
 
-bool EasyRandR::Output::outputsChanged(void )
+bool EasyRandR::Output::outputsChanged(void) const
 {
     return m_outputsChanged;
 }
 
-bool EasyRandR::Output::positionChanged(void )
+bool EasyRandR::Output::positionChanged(void) const
 {
     return m_positionChanged;
 }
 
-bool EasyRandR::Output::rotationChanged(void )
+bool EasyRandR::Output::rotationChanged(void) const
 {
     return m_rotationChanged;
 }
@@ -394,7 +394,7 @@ void EasyRandR::Output::on(void )
     applySettings();
 }
 
-uint EasyRandR::Output::maxX(void )
+uint EasyRandR::Output::maxX(void) const
 {
     uint maxPos = 0;
 
@@ -415,7 +415,7 @@ uint EasyRandR::Output::maxX(void )
     return maxPos;
 }
 
-uint EasyRandR::Output::maxY(void )
+uint EasyRandR::Output::maxY(void) const
 {
     uint maxPos = 0;
 

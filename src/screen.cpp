@@ -45,7 +45,7 @@ EasyRandR::Screen::~Screen()
 	XRRFreeScreenConfigInfo(m_info);
 }
 
-Time EasyRandR::Screen::configTimestamp(void)
+Time EasyRandR::Screen::configTimestamp(void) const
 {
     if (m_resources)
 	return m_resources->configTimestamp;
@@ -54,7 +54,7 @@ Time EasyRandR::Screen::configTimestamp(void)
 }
 
 /* Returns the available outputs for this screen */
-QList< RROutput > EasyRandR::Screen::getOutputs(void)
+QList< RROutput > EasyRandR::Screen::getOutputs(void) const
 {
     QList<RROutput> outs;
     
@@ -66,7 +66,7 @@ QList< RROutput > EasyRandR::Screen::getOutputs(void)
     return outs;
 }
 
-int EasyRandR::Screen::getOutputCount(void )
+int EasyRandR::Screen::getOutputCount(void) const
 {
     if (m_resources)
 	return m_resources->noutput;
@@ -74,17 +74,17 @@ int EasyRandR::Screen::getOutputCount(void )
 	return 0;
 }
 
-XRRScreenResources* EasyRandR::Screen::getResources(void )
+XRRScreenResources* EasyRandR::Screen::getResources(void) const
 {
     return m_resources;
 }
 
-bool EasyRandR::Screen::isInfoValid(void )
+bool EasyRandR::Screen::isInfoValid(void) const
 {
     return m_infoValid;
 }
 
-void EasyRandR::Screen::updateInfo(void )
+void EasyRandR::Screen::updateInfo(void)
 {
     if (m_info)
 	XRRFreeScreenConfigInfo(m_info);
@@ -105,12 +105,12 @@ void EasyRandR::Screen::updateInfo(void )
     }
 }
 
-bool EasyRandR::Screen::isResValid(void )
+bool EasyRandR::Screen::isResValid(void) const
 {
     return m_resValid;
 }
 
-void EasyRandR::Screen::updateResources(void )
+void EasyRandR::Screen::updateResources(void)
 {
     if (m_resources)
 	XRRFreeScreenResources(m_resources);
@@ -134,7 +134,7 @@ void EasyRandR::Screen::updateResources(void )
     }
 }
 
-Time EasyRandR::Screen::timestamp(void )
+Time EasyRandR::Screen::timestamp(void) const
 {
     if (m_resources)
 	return m_resources->timestamp;
@@ -142,7 +142,7 @@ Time EasyRandR::Screen::timestamp(void )
 	return 0;
 }
 
-QList< RRCrtc > EasyRandR::Screen::getCrtcs(void )
+QList< RRCrtc > EasyRandR::Screen::getCrtcs(void) const
 {
     QList<RRCrtc> list;
     
@@ -153,7 +153,7 @@ QList< RRCrtc > EasyRandR::Screen::getCrtcs(void )
     return list;
 }
 
-QList< XRRModeInfo > EasyRandR::Screen::getModes(void )
+QList< XRRModeInfo > EasyRandR::Screen::getModes(void) const
 {
     QList<XRRModeInfo> list;
     
@@ -189,7 +189,7 @@ bool EasyRandR::Screen::setSize(QSize s)
     }
 }
 
-QSize EasyRandR::Screen::getSize ( void )
+QSize EasyRandR::Screen::getSize(void) const
 {
     QSize s;
     Display *dpy = XOpenDisplay(NULL);
@@ -204,22 +204,22 @@ QSize EasyRandR::Screen::getSize ( void )
 	return QSize();
 }
 
-uint EasyRandR::Screen::minHeight(void )
+uint EasyRandR::Screen::minHeight(void) const
 {
     return m_minHeight;
 }
 
-uint EasyRandR::Screen::maxHeight(void )
+uint EasyRandR::Screen::maxHeight(void) const
 {
     return m_maxHeight;
 }
 
-uint EasyRandR::Screen::minWidth(void )
+uint EasyRandR::Screen::minWidth(void) const
 {
     return m_minWidth;
 }
 
-uint EasyRandR::Screen::maxWidth(void )
+uint EasyRandR::Screen::maxWidth(void) const
 {
     return m_maxWidth;
 }

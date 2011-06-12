@@ -62,7 +62,7 @@ EasyRandR::Configuration::~Configuration()
 {
 }
 
-QMap<RROutput,EasyRandR::Output*> EasyRandR::Configuration::getOutputs(int screen)
+QMap<RROutput,EasyRandR::Output*> EasyRandR::Configuration::getOutputs(int screen) const
 {
     QMap<RROutput,EasyRandR::Output*> m;
     
@@ -75,7 +75,7 @@ QMap<RROutput,EasyRandR::Output*> EasyRandR::Configuration::getOutputs(int scree
     return m;
 }
 
-QList< EasyRandR::Output* > EasyRandR::Configuration::getOutputList(int screen)
+QList< EasyRandR::Output* > EasyRandR::Configuration::getOutputList(int screen) const
 {
     QList<EasyRandR::Output*> l;
     if (m_screens.value(screen)) {
@@ -87,7 +87,7 @@ QList< EasyRandR::Output* > EasyRandR::Configuration::getOutputList(int screen)
     return l;
 }
 
-int EasyRandR::Configuration::getScreenCount(void )
+int EasyRandR::Configuration::getScreenCount(void) const
 {
     Display *dpy = XOpenDisplay(NULL);
     
@@ -97,17 +97,17 @@ int EasyRandR::Configuration::getScreenCount(void )
 	return 0;
 }
 
-QMap< int, EasyRandR::Screen* > EasyRandR::Configuration::getScreens(void )
+QMap< int, EasyRandR::Screen* > EasyRandR::Configuration::getScreens(void) const
 {
     return m_screens;
 }
 
-QList< EasyRandR::Screen* > EasyRandR::Configuration::getScreenList(void )
+QList< EasyRandR::Screen* > EasyRandR::Configuration::getScreenList(void) const
 {
     return m_screens.values();
 }
 
-int EasyRandR::Configuration::applyConfiguration(void )
+int EasyRandR::Configuration::applyConfiguration(void)
 {
     for (int i=0; i<m_outputs.count(); i++) { // Screens
 	for (int j=0; j<m_outputs[i].count(); j++) // Outputs
