@@ -321,6 +321,13 @@ public:
     void off(void);
     void on(void);
     
+    /**
+     * @brief Return a pointer to the screen this output belongs to
+     * 
+     * @return EasyRandR::Screen* const
+     **/
+    EasyRandR::Screen* const screen(void) const;
+    
 private:
     Window m_window;
     RROutput m_outputId;

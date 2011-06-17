@@ -435,3 +435,8 @@ uint EasyRandR::Output::maxY(void) const
 
     return maxPos;
 }
+
+EasyRandR::Screen* const EasyRandR::Output::screen(void) const
+{
+    return m_screen;
+}
