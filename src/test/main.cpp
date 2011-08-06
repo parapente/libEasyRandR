@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
 	
 	// Output Connection & Crtc
 	if (outlist_it.value()->connectionStatus() == RR_Connected)
-	    out << "Connected to CRTC: " << outlist_it.value()->crtc() << "\n";
+	    out << "Connected to CRTC: " << outlist_it.value()->crtcId() << "\n";
 	else if (outlist_it.value()->connectionStatus() == RR_Disconnected)
 	    out << "Disconnected\n";
 	else
@@ -88,6 +88,10 @@ int main(int argc, char **argv) {
 	if (rot & RR_Reflect_Y)
 	    out << "*";
 	out << "\n";
+	
+	if (outlist_it.value()->crtc()) {
+	    out << "Gamma size:" << outlist_it.value()->crtc()->getGammaSize() << endl;
+	}
     }
     
     return 0;
