@@ -63,7 +63,7 @@ bool EasyRandR::Output::isValid(void) const
     return m_valid;
 }
 
-RRCrtc EasyRandR::Output::crtc(void) const
+RRCrtc EasyRandR::Output::crtcId(void) const
 {
     if (m_info)
 	return m_info->crtc;
@@ -439,4 +439,9 @@ uint EasyRandR::Output::maxY(void) const
 EasyRandR::Screen* const EasyRandR::Output::screen(void) const
 {
     return m_screen;
+}
+
+EasyRandR::Crtc* const EasyRandR::Output::crtc(void) const
+{
+    return m_pcrtc;
 }

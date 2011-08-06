@@ -76,7 +76,7 @@ public:
      *
      * @return RRCrtc
      **/
-    RRCrtc crtc(void) const;
+    RRCrtc crtcId(void) const;
     
     /**
      * @brief Gives the time of the last change of the output
@@ -327,6 +327,13 @@ public:
      * @return EasyRandR::Screen* const
      **/
     EasyRandR::Screen* const screen(void) const;
+
+    /**
+     * @brief Return a pointer to the crtc this output is connected to
+     * 
+     * @return EasyRandR::Crtc* const
+     **/
+    EasyRandR::Crtc* const crtc(void) const;
     
 private:
     Window m_window;
