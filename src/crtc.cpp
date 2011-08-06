@@ -173,3 +173,68 @@ QList< RROutput > EasyRandR::Crtc::possibleOutputs(void) const
     
     return list;
 }
+
+int EasyRandR::Crtc::getGammaSize(void) const
+{
+    Display *dpy = XOpenDisplay(NULL);
+    int size;
+
+    if (dpy) {
+	size = XRRGetCrtcGammaSize(dpy,m_id);
+	XCloseDisplay(dpy);
+    }
+    else
+	size = -1;
+    
+    return size;
+}
+
+XRRCrtcGamma* EasyRandR::Crtc::getGamma(void) const
+{
+    XRRCrtcGamma* gamma = NULL;
+    quint64 value;
+    
+    int size = getGammaSize();
+    
+    if (size == -1) // Error getting gamma size
+	return gamma;
+
+    Display *dpy = XOpenDisplay(NULL);
+    if (dpy)
+	gamma = XRRGetCrtcGamma(dpy,m_id);
+    XCloseDisplay(dpy);
+    return gamma;
+}
+
+int EasyRandR::Crtc::setGamma(QList<quint16> red, QList<quint16> green, QList<quint16> blue)
+{
+    XRRCrtcGamma* crtcGamma = NULL;
+
+    int size = getGammaSize();
+    
+    if (size == -1) // Error getting gamma size
+	return -1;
+    
+    Display *dpy = XOpenDisplay(NULL);
+    if (!dpy)
+	return -2;
+    
+    crtcGamma = XRRAllocGamma(size);
+    
+    if (!crtcGamma)
+	return -3;
+    
+    crtcGamma->red = new unsigned short int[size];
+    crtcGamma->green = new unsigned short int[size];
+    crtcGamma->blue = new unsigned short int[size];
+
+    for (int i=0; i<size; i++)
+	crtcGamma->red[i] = red[i];
+    for (int i=0; i<size; i++)
+	crtcGamma->green[i] = green[i];
+    for (int i=0; i<size; i++)
+	crtcGamma->blue[i] = blue[i];
+    
+    XRRSetCrtcGamma(dpy,m_id,crtcGamma);
+    XCloseDisplay(dpy);
+}

@@ -136,6 +136,10 @@ public:
      **/
     QList<RROutput> possibleOutputs(void) const;
     
+    int getGammaSize(void) const;
+    XRRCrtcGamma* getGamma(void) const;
+    int setGamma(QList< quint16 > red, QList< quint16 > green, QList< quint16 > blue);
+    
 private:
     EasyRandR::Screen *m_screen;
     RRCrtc m_id;
