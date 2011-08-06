@@ -2,11 +2,17 @@ RandR
 -----
 Normal:
 * Auto-update screen, output & screen configuration when possible
+* Library documentation
+* Complete RandR v1.2 support:
+    - Support output properties
+    - Support creation/deletion of output modes
+* Complete RandR v1.3 support:
+    - Get/SetOutputPrimary
+    - Get/SetPanning
+    - Get/SetCrtcTransform
 
-Minor:
+Future work:
 * Support v1.4 of extension
-* Support output properties
-* Support creation/deletion of output modes
 
 NVCtl
 -----
