@@ -3,6 +3,8 @@ RandR
 Normal:
 * Auto-update screen, output & screen configuration when possible
 * Library documentation
+* Error handling
+* Notifications
 * Complete RandR v1.2 support:
     - Support output properties
     - Support creation/deletion of output modes
