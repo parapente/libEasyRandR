@@ -172,3 +172,30 @@ void EasyRandR::Configuration::updateScreenSize(int screen, QList< EasyRandR::Ou
 	    qDebug() << "Failed!";
     }
 }
+
+RROutput EasyRandR::Configuration::getPrimaryOutput(int screen) const
+{
+    Display* dpy = XOpenDisplay(NULL);
+    RROutput output;
+    
+    if (dpy) {
+	output = XRRGetOutputPrimary(dpy, RootWindow(dpy,screen));
+	XCloseDisplay(dpy);
+	return output;
+    }
+    else
+	return 0;
+}
+
+int EasyRandR::Configuration::setPrimaryOutput(RROutput output, int screen) const
+{
+    Display* dpy = XOpenDisplay(NULL);
+
+    if (dpy) {
+	XRRSetOutputPrimary(dpy, RootWindow(dpy, screen), output);
+	XCloseDisplay(dpy);
+	return 0;
+    }
+    else
+	return -1;
+}

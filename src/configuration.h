@@ -55,7 +55,7 @@ public:
      *
      * @return QMap<RROutput,EasyRandR::Output*>
      **/
-    QMap<RROutput,Output*> getOutputs( int screen) const;
+    QMap<RROutput,Output*> getOutputs(int screen) const;
     
     /**
      * @brief Get a simple list of all outputs of a screen
@@ -87,6 +87,8 @@ public:
     QList<Screen*> getScreenList(void) const;
     
     int applyConfiguration(void);
+    int setPrimaryOutput(RROutput output, int screen) const;
+    RROutput getPrimaryOutput(int screen) const;
     
 private:
     bool m_valid;

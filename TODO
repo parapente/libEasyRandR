@@ -8,7 +8,6 @@ Normal:
 * Complete RandR v1.2 support:
     - Support creation/deletion of output modes
 * Complete RandR v1.3 support:
-    - Get/SetOutputPrimary
     - Get/SetPanning
     - Get/SetCrtcTransform
 
