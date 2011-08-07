@@ -5,7 +5,7 @@ include(${QT_USE_FILE})
 configure_file (easycfg.h.cmake
                 ${CMAKE_CURRENT_SOURCE_DIR}/easycfg.h )
 
-set(libeasyrandr_SRCS crtc.cpp output.cpp configuration.cpp screen.cpp)
+set(libeasyrandr_SRCS outputproperty.cpp crtc.cpp output.cpp configuration.cpp screen.cpp)
 set(libeasyrandr_HDRS crtc.h output.h configuration.h screen.h)
 set(BUILD_SHARED_LIBS true)
 
