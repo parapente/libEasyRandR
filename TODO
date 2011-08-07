@@ -6,7 +6,6 @@ Normal:
 * Error handling
 * Notifications
 * Complete RandR v1.2 support:
-    - Support output properties
     - Support creation/deletion of output modes
 * Complete RandR v1.3 support:
     - Get/SetOutputPrimary
