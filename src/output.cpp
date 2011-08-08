@@ -445,3 +445,22 @@ EasyRandR::Crtc* const EasyRandR::Output::crtc(void) const
 {
     return m_pcrtc;
 }
+
+QList< EasyRandR::OutputProperty > EasyRandR::Output::listOutputProperties(void) const
+{
+    int num_properties;
+    Display* dpy = XOpenDisplay(NULL);
+    Atom* property;
+    QList<EasyRandR::OutputProperty> prop_list;
+    
+    if (dpy) {
+	property = XRRListOutputProperties(dpy, m_outputId, &num_properties);
+	XCloseDisplay(dpy);
+	for (int i=0; i<num_properties; i++) {
+	    EasyRandR::OutputProperty tmp(m_outputId, property[i]);
+	    prop_list.append(tmp);
+	}
+    }
+    
+    return prop_list;
+}

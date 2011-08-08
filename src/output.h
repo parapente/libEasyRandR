@@ -26,6 +26,7 @@
 #include <X11/extensions/randr.h>
 #include "screen.h"
 #include "crtc.h"
+#include "outputproperty.h"
 
 namespace EasyRandR {
     
@@ -334,6 +335,8 @@ public:
      * @return EasyRandR::Crtc* const
      **/
     EasyRandR::Crtc* const crtc(void) const;
+    
+    QList<EasyRandR::OutputProperty> listOutputProperties(void) const;
     
 private:
     Window m_window;

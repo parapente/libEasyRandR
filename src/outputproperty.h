@@ -19,8 +19,8 @@
 
 #ifndef OUTPUTPROPERTY_H
 #define OUTPUTPROPERTY_H
-#include <X11/extensions/Xrandr.h>
 #include <QList>
+#include <X11/extensions/Xrandr.h>
 
 namespace EasyRandR{
     
@@ -28,7 +28,7 @@ class OutputProperty
 {
 
 public:
-    OutputProperty(RROutput output);
+    OutputProperty(RROutput output, Atom id);
     bool isValid(void) const;
     int query(void);
     int configure(void) const;

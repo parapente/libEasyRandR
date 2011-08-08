@@ -19,9 +19,10 @@
 
 #include "outputproperty.h"
 
-EasyRandR::OutputProperty::OutputProperty(RROutput output)
+EasyRandR::OutputProperty::OutputProperty(RROutput output, Atom id)
 {
     m_output = output;
+    m_id = id;
 }
 
 int EasyRandR::OutputProperty::remove(void) const
