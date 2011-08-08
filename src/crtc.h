@@ -33,6 +33,36 @@ class Crtc : public QObject
 public:
     explicit Crtc(EasyRandR::Screen *scr, RRCrtc crtc);
     virtual ~Crtc();
+
+    class Matrix {
+    public:
+	Matrix();
+	
+	void setData(uint i, uint j, XFixed value);
+	XFixed data(uint i, uint j);
+	
+    private:
+	XFixed m_matrix[3][3];
+    };
+    
+    class TransformAttributes {
+    public:
+	void setAttributes(XRRCrtcTransformAttributes* attributes);
+	EasyRandR::Crtc::Matrix pendingTransform(void);
+	QString pendingFilter(void);
+	QList<XFixed> pendingParams(void);
+	EasyRandR::Crtc::Matrix currentTransform(void);
+	QString currentFilter(void);
+	QList<XFixed> currentParams(void);
+	
+    private:
+	EasyRandR::Crtc::Matrix m_pendingTransform;
+	QString m_pendingFilter;
+	QList<XFixed> m_pendingParams;
+	EasyRandR::Crtc::Matrix m_currentTransform;
+	QString m_currentFilter;
+	QList<XFixed> m_currentParams;
+    };
     
     /**
      * @brief Returns true if crtc info is valid, false otherwise
@@ -139,6 +169,8 @@ public:
     int getGammaSize(void) const;
     XRRCrtcGamma* getGamma(void) const;
     int setGamma(QList< quint16 > red, QList< quint16 > green, QList< quint16 > blue);
+    int setTransformationMatrix(EasyRandR::Crtc::Matrix transformation, QString filter, QList< XFixed > parameters);
+    TransformAttributes getTransformationMatrix(void);
     
 private:
     EasyRandR::Screen *m_screen;

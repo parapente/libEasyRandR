@@ -238,3 +238,109 @@ int EasyRandR::Crtc::setGamma(QList<quint16> red, QList<quint16> green, QList<qu
     XRRSetCrtcGamma(dpy,m_id,crtcGamma);
     XCloseDisplay(dpy);
 }
+
+int EasyRandR::Crtc::setTransformationMatrix(EasyRandR::Crtc::Matrix transformation, QString filter, QList<XFixed> parameters)
+{
+    Display *dpy = XOpenDisplay(NULL);
+    XFixed* params;
+    int num_params;
+    
+    if (dpy) {
+	num_params = parameters.count();
+	params = new XFixed[num_params];
+	for (int i=0; i<num_params; i++)
+	    params[i] = parameters.at(i);
+	XTransform data;
+	for (int i=0; i<3; i++)
+	    for (int j=0; j<3; j++)
+		data.matrix[i][j] = transformation.data(i,j);
+	XRRSetCrtcTransform(dpy, m_id, &data, filter.toUtf8().data(), params, num_params);
+	XCloseDisplay(dpy);
+	delete params;
+	return 0;
+    }
+    else
+	return -1;
+}
+
+EasyRandR::Crtc::TransformAttributes EasyRandR::Crtc::getTransformationMatrix(void)
+{
+    Display *dpy = XOpenDisplay(NULL);
+    XRRCrtcTransformAttributes** attributes;
+    EasyRandR::Crtc::TransformAttributes ret_attribs;
+
+    if (dpy) {
+	XRRGetCrtcTransform(dpy, m_id, attributes); // TODO: Check return value
+	ret_attribs.setAttributes(*attributes);
+	XFree(*attributes);
+	XCloseDisplay(dpy);
+    }
+    
+    return ret_attribs;
+}
+
+EasyRandR::Crtc::Matrix::Matrix()
+{
+    for (int i=0; i<3; i++)
+	for (int j=0; j<3; j++)
+	    m_matrix[i][j] = 0;
+}
+
+XFixed EasyRandR::Crtc::Matrix::data(uint i, uint j)
+{
+    if (i>3 || j>3)
+	return 0;
+    return m_matrix[i][j];
+}
+
+void EasyRandR::Crtc::Matrix::setData(uint i, uint j, XFixed value)
+{
+    if (!(i>3 || j>3))
+	m_matrix[i][j] = value;
+}
+
+QString EasyRandR::Crtc::TransformAttributes::currentFilter(void)
+{
+    return m_currentFilter;
+}
+
+QList< XFixed > EasyRandR::Crtc::TransformAttributes::currentParams(void)
+{
+    return m_currentParams;
+}
+
+EasyRandR::Crtc::Matrix EasyRandR::Crtc::TransformAttributes::currentTransform(void)
+{
+    return m_currentTransform;
+}
+
+QString EasyRandR::Crtc::TransformAttributes::pendingFilter(void)
+{
+    return m_pendingFilter;
+}
+
+QList< XFixed > EasyRandR::Crtc::TransformAttributes::pendingParams(void)
+{
+    return m_pendingParams;
+}
+
+EasyRandR::Crtc::Matrix EasyRandR::Crtc::TransformAttributes::pendingTransform(void)
+{
+    return m_pendingTransform;
+}
+
+void EasyRandR::Crtc::TransformAttributes::setAttributes(XRRCrtcTransformAttributes* attributes)
+{
+    m_currentFilter = attributes->currentFilter;
+    m_pendingFilter = attributes->pendingFilter;
+    
+    for (int i=0; i<3; i++)
+	for (int j=0; j<3; j++) {
+	    m_currentTransform.setData(i, j, attributes->currentTransform.matrix[i][j]);
+	    m_pendingTransform.setData(i, j, attributes->pendingTransform.matrix[i][j]);
+	}
+    for (int i=0; i<attributes->currentNparams; i++)
+	m_currentParams.append(attributes->currentParams[i]);
+    for (int i=0; i<attributes->pendingNparams; i++)
+	m_pendingParams.append(attributes->pendingParams[i]);
+}

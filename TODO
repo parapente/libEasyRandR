@@ -9,7 +9,6 @@ Normal:
     - Support creation/deletion of output modes
 * Complete RandR v1.3 support:
     - Get/SetPanning
-    - Get/SetCrtcTransform
 
 Future work:
 * Support v1.4 of extension
